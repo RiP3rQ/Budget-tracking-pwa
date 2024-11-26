@@ -18,7 +18,7 @@ export const useConfirmModal = (
   } | null>(null);
 
   const confirm = () =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       setPromise({ resolve });
     });
 

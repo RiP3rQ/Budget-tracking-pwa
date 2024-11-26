@@ -30,7 +30,7 @@ export const useSelectAccountModal = (): [
   const selectValue = useRef<string>();
 
   const confirm = () =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       setPromise({ resolve });
     });
 
