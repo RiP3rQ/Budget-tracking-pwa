@@ -1,24 +1,24 @@
-import { useEditCategorySheet } from "@/actions/budget/categories/state/single-category-sheet-state";
+import { useEditCategorySheet } from "@/states/categories/single-category-sheet-state";
 import { TriangleAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEditTransactionSheet } from "@/actions/budget/transactions/state/single-transaction-sheet-state";
+import { useEditTransactionSheet } from "@/states/transactions/single-transaction-sheet-state";
+import { SelectCategory } from "@/db/schema";
 
 type Props = {
   id: number;
-  category: string | null;
-  categoryId: number | null;
+  category: SelectCategory;
 };
 
-export const CategoryColumn = ({ id, category, categoryId }: Props) => {
+export const CategoryColumn = ({ id, category }: Readonly<Props>) => {
   const { onOpen } = useEditCategorySheet();
   const { onOpen: onOpenTransactionEdit } = useEditTransactionSheet();
 
   const onClick = () => {
-    if (!categoryId) {
+    if (!category.id) {
       onOpenTransactionEdit(id);
       return;
     }
-    onOpen(categoryId);
+    onOpen(category.id);
   };
 
   return (
@@ -30,7 +30,7 @@ export const CategoryColumn = ({ id, category, categoryId }: Props) => {
       )}
     >
       {!category && <TriangleAlert className={"mr-2 size-4 shrink-0"} />}
-      {category || "Brak kategorii"}
+      {category.name || "Brak kategorii"}
     </div>
   );
 };

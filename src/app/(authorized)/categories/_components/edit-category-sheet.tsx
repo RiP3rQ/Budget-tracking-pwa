@@ -14,7 +14,7 @@ import { useConfirmModal } from "@/hooks/use-confirm-modal";
 import { useGetSingleCategory } from "@/actions/budget/categories/use-get-single-category";
 import { useEditCategory } from "@/actions/budget/categories/use-edit-category";
 import { useDeleteCategory } from "@/actions/budget/categories/use-delete-category";
-import { useEditCategorySheet } from "@/actions/budget/categories/state/single-category-sheet-state";
+import { useEditCategorySheet } from "@/states/categories/single-category-sheet-state";
 
 export const EditCategorySheet = () => {
   const { isOpen, onClose, id } = useEditCategorySheet();

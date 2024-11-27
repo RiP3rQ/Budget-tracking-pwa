@@ -1,11 +1,11 @@
 "use client";
-import { useNewAccountSheet } from "@/actions/budget/accounts/state/new-account-sheet-state";
+import { useNewAccountSheet } from "@/states/account/new-account-sheet-state";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Plus } from "lucide-react";
 
 import { DataTable } from "@/components/table/data-table";
-import { columns } from "@/actions/budget/accounts/table/columns";
+import { columns } from "@/config/accounts/columns";
 import { useGetAccounts } from "@/actions/budget/accounts/use-get-accounts";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDeleteAccounts } from "@/actions/budget/accounts/use-bulk-delete";

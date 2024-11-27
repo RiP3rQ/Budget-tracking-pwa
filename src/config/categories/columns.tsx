@@ -1,18 +1,10 @@
-"use client";
-
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/table/data-table-header";
-import { InferResponseType } from "hono";
-import { client } from "@/lib/hono";
 import { Actions } from "@/actions/budget/categories/table/actions";
+import { SelectCategory } from "@/db/schema";
 
-export type ResponseType = InferResponseType<
-  typeof client.api.categories.$get,
-  200
->["data"][0];
-
-export const columns: ColumnDef<ResponseType>[] = [
+export const columns: ColumnDef<SelectCategory>[] = [
   {
     id: "select",
     header: ({ table }) => (

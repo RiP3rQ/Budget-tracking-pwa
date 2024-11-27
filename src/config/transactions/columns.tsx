@@ -1,23 +1,16 @@
-"use client";
-
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/table/data-table-header";
-import { InferResponseType } from "hono";
-import { client } from "@/lib/hono";
+
 import { Actions } from "@/actions/budget/transactions/table/actions";
 import moment from "moment";
-import { formatCurrency } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { AccountColumn } from "@/actions/budget/transactions/table/account-column";
 import { CategoryColumn } from "@/actions/budget/transactions/table/category-column";
+import { FullSelectTransaction } from "@/db/schema";
+import { formatCurrency } from "@/lib/currencies";
 
-export type ResponseType = InferResponseType<
-  typeof client.api.transactions.$get,
-  200
->["data"][0];
-
-export const columns: ColumnDef<ResponseType>[] = [
+export const columns: ColumnDef<FullSelectTransaction>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -57,11 +50,7 @@ export const columns: ColumnDef<ResponseType>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <CategoryColumn
-          id={row.original.id}
-          category={row.original.category}
-          categoryId={row.original.categoryId}
-        />
+        <CategoryColumn id={row.original.id} category={row.original.category} />
       );
     },
   },
@@ -80,7 +69,7 @@ export const columns: ColumnDef<ResponseType>[] = [
       <DataTableColumnHeader column={column} title="Kwota" />
     ),
     cell: ({ row }) => {
-      const amount = row.original.amount;
+      const amount = Number(row.original.amount);
       return (
         <Badge
           variant={amount > 0 ? "income" : "expense"}
@@ -97,12 +86,7 @@ export const columns: ColumnDef<ResponseType>[] = [
       <DataTableColumnHeader column={column} title="Konto" />
     ),
     cell: ({ row }) => {
-      return (
-        <AccountColumn
-          account={row.original.account}
-          accountId={row.original.accountId}
-        />
-      );
+      return <AccountColumn account={row.original.account} />;
     },
   },
   {

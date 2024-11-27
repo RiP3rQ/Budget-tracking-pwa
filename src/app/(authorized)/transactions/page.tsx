@@ -4,9 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Plus } from "lucide-react";
 
 import { DataTable } from "@/components/table/data-table";
-import { columns } from "@/actions/budget/transactions/table/columns";
+import { columns } from "@/config/transactions/columns";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useNewTransactionSheet } from "@/actions/budget/transactions/state/new-transaction-sheet-state";
+import { useNewTransactionSheet } from "@/states/transactions/new-transaction-sheet-state";
 import { useDeleteTransactions } from "@/actions/budget/transactions/use-bulk-delete-transactions";
 import { useGetTransactions } from "@/actions/budget/transactions/use-get-transactions";
 import { UploadCSVButton } from "@/app/(dashboard)/budget/transactions/_components/import-csv/upload-csv-button";

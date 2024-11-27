@@ -5,7 +5,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useNewCategorySheet } from "@/actions/budget/categories/state/new-category-sheet-state";
+import { useNewCategorySheet } from "@/states/categories/new-category-sheet-state";
 import {
   CategoryForm,
   FormValues,

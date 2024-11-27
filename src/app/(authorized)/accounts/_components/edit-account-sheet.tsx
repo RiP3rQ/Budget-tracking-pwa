@@ -9,7 +9,7 @@ import {
   AccountForm,
   FormValues,
 } from "@/app/(dashboard)/budget/accounts/_components/new-account-form";
-import { useEditAccountSheet } from "@/actions/budget/accounts/state/single-account-sheet-state";
+import { useEditAccountSheet } from "@/states/account/single-account-sheet-state";
 import { useGetSingleAccount } from "@/actions/budget/accounts/use-get-single-account";
 import { Loader2 } from "lucide-react";
 import { useEditAccount } from "@/actions/budget/accounts/use-edit-account";

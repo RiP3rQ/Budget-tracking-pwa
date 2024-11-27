@@ -5,7 +5,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useNewTransactionSheet } from "@/actions/budget/transactions/state/new-transaction-sheet-state";
+import { useNewTransactionSheet } from "@/states/transactions/new-transaction-sheet-state";
 import {
   ApiFormValues,
   TransactionForm,

@@ -9,7 +9,7 @@ import {
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useConfirmModal } from "@/hooks/use-confirm-modal";
-import { useEditTransactionSheet } from "@/actions/budget/transactions/state/single-transaction-sheet-state";
+import { useEditTransactionSheet } from "@/states/transactions/single-transaction-sheet-state";
 import { useDeleteTransaction } from "@/actions/budget/transactions/use-delete-transaction";
 
 export const Actions = ({ row }: { row: Row<any> }) => {

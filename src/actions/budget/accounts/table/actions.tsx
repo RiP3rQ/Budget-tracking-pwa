@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
-import { useEditAccountSheet } from "@/actions/budget/accounts/state/single-account-sheet-state";
+import { useEditAccountSheet } from "@/states/account/single-account-sheet-state";
 import { useDeleteAccount } from "@/actions/budget/accounts/use-delete-account";
 import { useConfirmModal } from "@/hooks/use-confirm-modal";
 

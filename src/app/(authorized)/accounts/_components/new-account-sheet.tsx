@@ -5,7 +5,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useNewAccountSheet } from "@/actions/budget/accounts/state/new-account-sheet-state";
+import { useNewAccountSheet } from "@/states/account/new-account-sheet-state";
 import {
   AccountForm,
   FormValues,

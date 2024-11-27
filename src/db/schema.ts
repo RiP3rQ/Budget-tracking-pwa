@@ -10,25 +10,29 @@ import { createInsertSchema } from "drizzle-zod";
 import { relations } from "drizzle-orm";
 import { z } from "zod";
 
-// Base timestamp fields
+// BASE FIELDS
 const timestampFields = {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 };
 
+// DB SCHEMA ---- ACCOUNTS
 export const accounts = pgTable("budget_accounts", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   userId: text("user_id").notNull(), // CLERK_USER_ID
   ...timestampFields,
 });
-
 export const accountsRelations = relations(accounts, ({ many }) => ({
   transactions: many(transactions),
 }));
-
+// VALIDATION SCHEMA
 export const insertAccountsSchema = createInsertSchema(accounts);
+// TYPES
+export type NewAccount = z.infer<typeof insertAccountsSchema>;
+export type SelectAccount = typeof accounts.$inferSelect;
 
+// DB SCHEMA ---- CATEGORIES
 export const categories = pgTable("budget_categories", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
@@ -36,13 +40,16 @@ export const categories = pgTable("budget_categories", {
   userId: text("user_id").notNull(), // CLERK_USER_ID
   ...timestampFields,
 });
-
 export const categoriesRelations = relations(categories, ({ many }) => ({
   transactions: many(transactions),
 }));
-
+// VALIDATION SCHEMA
 export const insertCategoriesSchema = createInsertSchema(categories);
+// TYPES
+export type NewCategory = z.infer<typeof insertCategoriesSchema>;
+export type SelectCategory = typeof categories.$inferSelect;
 
+// DB SCHEMA ---- TRANSACTIONS
 export const transactions = pgTable("budget_transactions", {
   id: serial("id").primaryKey(),
   amount: numeric("amount", {
@@ -63,7 +70,6 @@ export const transactions = pgTable("budget_transactions", {
   }),
   ...timestampFields,
 });
-
 export const transactionsRelations = relations(transactions, ({ one }) => ({
   account: one(accounts, {
     fields: [transactions.accountId],
@@ -74,7 +80,7 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
     references: [categories.id],
   }),
 }));
-
+// VALIDATION SCHEMA
 export const insertTransactionsSchema = createInsertSchema(transactions, {
   amount: z
     .number()
@@ -86,3 +92,10 @@ export const insertTransactionsSchema = createInsertSchema(transactions, {
     ),
   date: z.coerce.date(),
 });
+// TYPES
+export type NewTransaction = z.infer<typeof insertTransactionsSchema>;
+export type SelectTransaction = typeof transactions.$inferSelect;
+export type FullSelectTransaction = SelectTransaction & {
+  account: SelectAccount;
+  category: SelectCategory;
+};
