@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { QueryProvider } from "@/providers/query-provider";
 import ToastProvider from "@/providers/toast-provider";
 import NextTopLoader from "nextjs-toploader";
+import { NuqsProvider } from "@/providers/nuqs-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -41,11 +42,13 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <QueryProvider>
-            <NextTopLoader color={"#10b981"} showSpinner={false} />
-            {children}
-            <ToastProvider />
-          </QueryProvider>
+          <NuqsProvider>
+            <QueryProvider>
+              <NextTopLoader color={"#10b981"} showSpinner={false} />
+              {children}
+              <ToastProvider />
+            </QueryProvider>
+          </NuqsProvider>
         </body>
       </html>
     </ClerkProvider>

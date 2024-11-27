@@ -5,8 +5,8 @@ import { DataTableColumnHeader } from "@/components/table/data-table-header";
 import { Actions } from "@/actions/budget/transactions/table/actions";
 import moment from "moment";
 import { Badge } from "@/components/ui/badge";
-import { AccountColumn } from "@/actions/budget/transactions/table/account-column";
-import { CategoryColumn } from "@/actions/budget/transactions/table/category-column";
+import { AccountColumn } from "@/components/table/accounts/account-column";
+import { CategoryColumn } from "@/components/table/transactions/category-column";
 import { FullSelectTransaction } from "@/db/schema";
 import { formatCurrency } from "@/lib/currencies";
 

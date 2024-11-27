@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileSearch, Loader2 } from "lucide-react";
 import { AreaChartVariant } from "@/components/charts/area-chart";
@@ -23,7 +21,6 @@ export const TransactionsChartWidget = ({ data, title, isLoading }: Props) => {
   const [chartType, setChartType] = useState("area" as "area" | "bar" | "line");
 
   const onChartTypeChange = (type: "area" | "bar" | "line") => {
-    // TODO: add paywall
     setChartType(type);
   };
 

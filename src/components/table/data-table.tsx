@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import {
   ColumnDef,
@@ -45,7 +43,6 @@ export function DataTable<TData, TValue>({
   onDelete,
   disabled,
 }: DataTableProps<TData, TValue>) {
-  // TODO: CHANGE filterKey TO FILTRATION BY EVERY COLUMN IN THE TABLE
   const [ConfirmDialog, confirm] = useConfirmModal(
     "USUWANIE!",
     "Czy na pewno chcesz usunąć wybrane elementy?",
@@ -105,7 +102,9 @@ export function DataTable<TData, TValue>({
             }}
           >
             <Trash className="mr-2 size-4" />
-            Usuń ({table.getFilteredSelectedRowModel().rows.length})
+            Usuń ({
+              table.getFilteredSelectedRowModel().rows.length
+            })
           </Button>
         )}
         <DataTableViewOptions table={table} />

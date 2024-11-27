@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Plus } from "lucide-react";
 
 import { DataTable } from "@/components/table/data-table";
-import { columns } from "@/config/categories/columns";
+import { columns } from "@/components/table/categories/columns";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNewCategorySheet } from "@/states/categories/new-category-sheet-state";
 import { useDeleteCategories } from "@/actions/budget/categories/use-bulk-delete-categories";

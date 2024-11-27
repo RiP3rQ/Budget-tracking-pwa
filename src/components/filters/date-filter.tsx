@@ -1,5 +1,4 @@
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { format, subDays } from "date-fns";
+import { subDays } from "date-fns";
 import {
   Popover,
   PopoverClose,
@@ -7,53 +6,44 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { formatDateRange } from "@/lib/utils";
-import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { ChevronDown } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import qs from "query-string";
+import { parseAsIsoDate, useQueryState } from "nuqs";
+import { toast } from "sonner";
+import { formatDateRange } from "@/lib/dates";
 
 export const DateFilter = () => {
-  const router = useRouter();
-  const pathname = usePathname();
+  const [dateFrom, setDateFrom] = useQueryState(
+    "from",
+    parseAsIsoDate
+      .withOptions({
+        shallow: true,
+      })
+      .withDefault(new Date()),
+  );
+  const [dateTo, setDateTo] = useQueryState(
+    "to",
+    parseAsIsoDate
+      .withOptions({
+        shallow: true,
+      })
+      .withDefault(subDays(new Date(), 30)),
+  );
 
-  const params = useSearchParams();
-  const accountId = params.get("accountId") ?? "all";
-  const from = params.get("from") ?? "";
-  const to = params.get("to") ?? "";
+  const applyDateFilters = (date: DateRange | undefined) => {
+    if (!date?.from || !date?.to) {
+      toast.error("Błąd: Nie wybrano zakresu dat");
+      return;
+    }
 
-  const defaultTo = new Date();
-  const defaultFrom = subDays(defaultTo, 30);
-
-  const paramState = {
-    from: from ? new Date(from) : defaultFrom,
-    to: to ? new Date(to) : defaultTo,
-  };
-
-  const [date, setDate] = useState<DateRange | undefined>(paramState);
-
-  const pushToUrl = (date: DateRange | undefined) => {
-    const query = {
-      accountId,
-      from: format(date?.from ?? defaultFrom, "yyyy-MM-dd"),
-      to: format(date?.to ?? defaultTo, "yyyy-MM-dd"),
-    };
-
-    const url = qs.stringifyUrl(
-      {
-        url: pathname,
-        query,
-      },
-      { skipNull: true, skipEmptyString: true },
-    );
-
-    router.push(url);
+    setDateFrom(date.from);
+    setDateTo(date.to);
   };
 
   const onReset = () => {
-    setDate(undefined);
-    pushToUrl(undefined);
+    setDateFrom(null);
+    setDateTo(null);
   };
 
   return (
@@ -70,7 +60,12 @@ export const DateFilter = () => {
             "focus:bg-white/30 transition"
           }
         >
-          <span>{formatDateRange(paramState)}</span>
+          <span>
+            {formatDateRange({
+              from: dateFrom,
+              to: dateTo,
+            })}
+          </span>
           <ChevronDown className={"size-4 ml-2 opacity-50"} />
         </Button>
       </PopoverTrigger>
@@ -79,15 +74,18 @@ export const DateFilter = () => {
           disabled={false}
           initialFocus
           mode={"range"}
-          defaultMonth={date?.from}
-          selected={date}
-          onSelect={setDate}
+          defaultMonth={dateTo}
+          selected={{
+            from: dateFrom,
+            to: dateTo,
+          }}
+          onSelect={applyDateFilters}
           numberOfMonths={2}
         />
         <div className={"p-4 w-full flex items-center gap-x-2"}>
           <PopoverClose asChild>
             <Button
-              disabled={!date?.from || !date?.to}
+              disabled={!dateFrom || !dateTo}
               variant={"outline"}
               onClick={onReset}
               className={"w-full"}
@@ -97,8 +95,8 @@ export const DateFilter = () => {
           </PopoverClose>
           <PopoverClose asChild>
             <Button
-              disabled={!date?.from || !date?.to}
-              onClick={() => pushToUrl(date)}
+              disabled={!dateFrom || !dateTo}
+              onClick={() => applyDateFilters({ from: dateFrom, to: dateTo })}
               className={"w-full"}
             >
               Zastosuj

@@ -6,48 +6,25 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetAccounts } from "@/actions/budget/accounts/use-get-accounts";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import qs from "query-string";
 import { useGetSummary } from "@/actions/budget/summary/use-get-summary";
+import { parseAsString, useQueryState } from "nuqs";
 
 export const AccountFilter = () => {
   const { data, isLoading } = useGetAccounts();
-  const params = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
-
   const { isLoading: isLoadingSummary } = useGetSummary();
-
-  const accountId = params.get("accountId") ?? "all";
-  const from = params.get("from") ?? "";
-  const to = params.get("to") ?? "";
-
-  const onChange = (newValue: string) => {
-    const query = {
-      accountId: newValue,
-      from,
-      to,
-    };
-
-    if (newValue === "all") {
-      query.accountId = "";
-    }
-
-    const url = qs.stringifyUrl(
-      {
-        url: pathname,
-        query,
-      },
-      { skipNull: true, skipEmptyString: true },
-    );
-
-    router.push(url);
-  };
+  const [account, setAccount] = useQueryState(
+    "account",
+    parseAsString
+      .withOptions({
+        shallow: true,
+      })
+      .withDefault("all"),
+  );
 
   return (
     <Select
-      value={accountId}
-      onValueChange={onChange}
+      value={account}
+      onValueChange={setAccount}
       disabled={isLoading || isLoadingSummary}
     >
       <SelectTrigger

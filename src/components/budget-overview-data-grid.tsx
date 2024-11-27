@@ -1,21 +1,16 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
-import { formatDateRange } from "@/lib/utils";
-import { FaPiggyBank } from "react-icons/fa";
 import { useGetSummary } from "@/actions/budget/summary/use-get-summary";
-import { GridDataCard } from "@/app/(dashboard)/budget/_components/grid-data-card";
-import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
+import { formatDateRange } from "@/lib/dates";
+import { GridDataCard } from "@/components/grid-data-card";
+import { PiggyBankIcon, TrendingDownIcon, TrendingUpIcon } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 export const BudgetOverviewDataGrid = () => {
   const { data, isLoading } = useGetSummary();
   const params = useSearchParams();
-  const from = params.get("from") || "";
-  const to = params.get("to") || "";
+  const from = params.get("dateFrom") || "";
+  const to = params.get("dateTo") || "";
 
   const dateRangeLabel = formatDateRange({ to, from });
-
-  console.log("data", data);
 
   return (
     <div className={"grid grid-cols-1 lg:grid-cols-3 gap-8 pb-2 mb-8"}>
@@ -24,7 +19,7 @@ export const BudgetOverviewDataGrid = () => {
         value={data?.remainingAmount || "Brak danych"}
         currency={"PLN"}
         percentageChange={data?.remainingChange || "Brak danych"}
-        icon={FaPiggyBank}
+        icon={PiggyBankIcon}
         variant={"default"}
         dateRange={dateRangeLabel}
         isLoading={isLoading}
@@ -34,7 +29,7 @@ export const BudgetOverviewDataGrid = () => {
         value={data?.incomeAmount || "Brak danych"}
         currency={"PLN"}
         percentageChange={data?.incomeChange || "Brak danych"}
-        icon={FaArrowTrendUp}
+        icon={TrendingUpIcon}
         variant={"default"}
         dateRange={dateRangeLabel}
         isLoading={isLoading}
@@ -44,7 +39,7 @@ export const BudgetOverviewDataGrid = () => {
         value={data?.expenseAmount || "Brak danych"}
         currency={"PLN"}
         percentageChange={data?.expenseChange || "Brak danych"}
-        icon={FaArrowTrendDown}
+        icon={TrendingDownIcon}
         variant={"default"}
         dateRange={dateRangeLabel}
         isLoading={isLoading}

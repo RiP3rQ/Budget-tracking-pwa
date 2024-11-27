@@ -1,8 +1,6 @@
-import NavButton from "@/app/(dashboard)/budget/_components/nav-button";
 import { ClerkLoaded, ClerkLoading, UserButton } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
-
-type Props = {};
+import NavButton from "@/components/nav-button";
 
 const routes = [
   {
@@ -21,17 +19,9 @@ const routes = [
     href: "/budget/categories",
     label: "Kategorie",
   },
-  {
-    href: "/budget/raports",
-    label: "Raporty",
-  },
-  {
-    href: "/budget/settings",
-    label: "Ustawienia",
-  },
 ];
 
-const Header = (props: Props) => {
+const Header = () => {
   return (
     <div
       className={"my-2 flex items-center justify-center gap-5 bg-purple-500"}

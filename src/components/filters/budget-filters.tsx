@@ -1,7 +1,5 @@
-"use client";
-
-import { AccountFilter } from "@/app/(dashboard)/budget/_components/account-filter";
-import { DateFilter } from "@/app/(dashboard)/budget/_components/date-filter";
+import { AccountFilter } from "@/components/filters/account-filter";
+import { DateFilter } from "@/components/filters/date-filter";
 
 export const BudgetFilters = () => {
   return (

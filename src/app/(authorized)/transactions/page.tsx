@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Plus } from "lucide-react";
 
 import { DataTable } from "@/components/table/data-table";
-import { columns } from "@/config/transactions/columns";
+import { columns } from "@/components/table/transactions/columns";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNewTransactionSheet } from "@/states/transactions/new-transaction-sheet-state";
 import { useDeleteTransactions } from "@/actions/budget/transactions/use-bulk-delete-transactions";

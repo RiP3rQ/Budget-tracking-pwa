@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileSearch, Loader2 } from "lucide-react";
 import { useState } from "react";
@@ -24,7 +22,6 @@ export const PercentageChartWidget = ({ data, title, isLoading }: Props) => {
   );
 
   const onChartTypeChange = (type: "pie" | "radar" | "radial") => {
-    // TODO: add paywall
     setChartType(type);
   };
 
