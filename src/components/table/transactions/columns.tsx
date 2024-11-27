@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/table/data-table-header";
 
-import { Actions } from "@/actions/budget/transactions/table/actions";
+import { ActionsTableColumns } from "@/components/table/transactions/actions-table-columns";
 import moment from "moment";
 import { Badge } from "@/components/ui/badge";
 import { AccountColumn } from "@/components/table/accounts/account-column";
@@ -94,6 +94,6 @@ export const columns: ColumnDef<FullSelectTransaction>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Akcje" />
     ),
-    cell: ({ row }) => <Actions row={row} />,
+    cell: ({ row }) => <ActionsTableColumns row={row} />,
   },
 ];

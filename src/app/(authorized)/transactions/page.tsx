@@ -7,15 +7,15 @@ import { DataTable } from "@/components/table/data-table";
 import { columns } from "@/components/table/transactions/columns";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNewTransactionSheet } from "@/states/transactions/new-transaction-sheet-state";
-import { useDeleteTransactions } from "@/actions/budget/transactions/use-bulk-delete-transactions";
-import { useGetTransactions } from "@/actions/budget/transactions/use-get-transactions";
+import { useDeleteTransactions } from "@/actions/transactions/use-bulk-delete-transactions";
+import { useGetTransactions } from "@/actions/transactions/use-get-transactions";
 import { UploadCSVButton } from "@/app/(dashboard)/budget/transactions/_components/import-csv/upload-csv-button";
 import { useState } from "react";
 import { ImportCard } from "@/app/(dashboard)/budget/transactions/_components/import-csv/import-card";
 import { transactions as transactionSchema } from "@/db/schema";
 import { useSelectAccountModal } from "@/hooks/use-select-account-modal";
 import { toast } from "sonner";
-import { useCreateManyTransactions } from "@/actions/budget/transactions/use-bulk-create-transactions";
+import { useCreateManyTransactions } from "@/actions/transactions/use-bulk-create-transactions";
 
 enum VARIANTS {
   LIST = "LIST",

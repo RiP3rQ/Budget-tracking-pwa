@@ -8,16 +8,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
+import { useEditAccountSheet } from "@/states/account/single-account-sheet-state";
+import { useDeleteAccount } from "@/actions/accounts/use-delete-account";
 import { useConfirmModal } from "@/hooks/use-confirm-modal";
-import { useEditTransactionSheet } from "@/states/transactions/single-transaction-sheet-state";
-import { useDeleteTransaction } from "@/actions/budget/transactions/use-delete-transaction";
 
-export const Actions = ({ row }: { row: Row<any> }) => {
-  const { onOpen } = useEditTransactionSheet();
-  const deleteMutation = useDeleteTransaction(row.original.id);
+export const ActionsTableColumns = ({ row }: { row: Row<any> }) => {
+  const { onOpen } = useEditAccountSheet();
+  const deleteMutation = useDeleteAccount(row.original.id);
   const [ConfirmationDialog, confirm] = useConfirmModal(
-    "Usuń transakcję!",
-    "Czy na pewno chcesz usunąć transakcję? Wszystkie transakcje związane z tym kontem zostaną usunięte.",
+    "Usuń konto!",
+    "Czy na pewno chcesz usunąć konto? Wszystkie transakcje związane z tym kontem zostaną usunięte.",
   );
 
   const handleDelete = async () => {

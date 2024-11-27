@@ -9,15 +9,15 @@ import {
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useConfirmModal } from "@/hooks/use-confirm-modal";
-import { useEditCategorySheet } from "@/states/categories/single-category-sheet-state";
-import { useDeleteCategory } from "@/actions/budget/categories/use-delete-category";
+import { useEditTransactionSheet } from "@/states/transactions/single-transaction-sheet-state";
+import { useDeleteTransaction } from "@/actions/transactions/use-delete-transaction";
 
-export const Actions = ({ row }: { row: Row<any> }) => {
-  const { onOpen } = useEditCategorySheet();
-  const deleteMutation = useDeleteCategory(row.original.id);
+export const ActionsTableColumns = ({ row }: { row: Row<any> }) => {
+  const { onOpen } = useEditTransactionSheet();
+  const deleteMutation = useDeleteTransaction(row.original.id);
   const [ConfirmationDialog, confirm] = useConfirmModal(
-    "Usuń kategorię!",
-    "Czy na pewno chcesz usunąć kategorię? Wszystkie transakcje związane z tym kontem zostaną usunięte.",
+    "Usuń transakcję!",
+    "Czy na pewno chcesz usunąć transakcję? Wszystkie transakcje związane z tym kontem zostaną usunięte.",
   );
 
   const handleDelete = async () => {

@@ -10,7 +10,7 @@ import {
   CategoryForm,
   FormValues,
 } from "@/app/(dashboard)/budget/categories/_components/new-category-form";
-import { useCreateCategory } from "@/actions/budget/categories/use-create-category";
+import { useCreateCategory } from "@/actions/categories/use-create-category";
 
 export const NewCategorySheet = () => {
   const { isOpen, onClose } = useNewCategorySheet();

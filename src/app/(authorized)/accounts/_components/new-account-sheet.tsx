@@ -10,7 +10,7 @@ import {
   AccountForm,
   FormValues,
 } from "@/app/(dashboard)/budget/accounts/_components/new-account-form";
-import { useCreateAccount } from "@/actions/budget/accounts/use-create-account";
+import { useCreateAccount } from "@/actions/accounts/use-create-account";
 
 export const NewAccountSheet = () => {
   const { isOpen, onClose } = useNewAccountSheet();

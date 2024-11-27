@@ -1,4 +1,4 @@
-import { useGetSummary } from "@/actions/budget/summary/use-get-summary";
+import { useGetSummary } from "@/actions/summary/use-get-summary";
 import { formatDateRange } from "@/lib/dates";
 import { GridDataCard } from "@/components/grid-data-card";
 import { PiggyBankIcon, TrendingDownIcon, TrendingUpIcon } from "lucide-react";

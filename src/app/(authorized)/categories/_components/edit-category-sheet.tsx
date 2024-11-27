@@ -11,9 +11,9 @@ import {
 } from "@/app/(dashboard)/budget/categories/_components/new-category-form";
 import { Loader2 } from "lucide-react";
 import { useConfirmModal } from "@/hooks/use-confirm-modal";
-import { useGetSingleCategory } from "@/actions/budget/categories/use-get-single-category";
-import { useEditCategory } from "@/actions/budget/categories/use-edit-category";
-import { useDeleteCategory } from "@/actions/budget/categories/use-delete-category";
+import { useGetSingleCategory } from "@/actions/categories/use-get-single-category";
+import { useEditCategory } from "@/actions/categories/use-edit-category";
+import { useDeleteCategory } from "@/actions/categories/use-delete-category";
 import { useEditCategorySheet } from "@/states/categories/single-category-sheet-state";
 
 export const EditCategorySheet = () => {

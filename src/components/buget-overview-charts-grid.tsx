@@ -1,4 +1,4 @@
-import { useGetSummary } from "@/actions/budget/summary/use-get-summary";
+import { useGetSummary } from "@/actions/summary/use-get-summary";
 import { TransactionsChartWidget } from "@/components/transactions-chart-widget";
 import { PercentageChartWidget } from "@/components/percentage-chart-widget";
 

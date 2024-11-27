@@ -8,8 +8,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useGetAccounts } from "@/actions/budget/accounts/use-get-accounts";
-import { useCreateAccount } from "@/actions/budget/accounts/use-create-account";
+import { useGetAccounts } from "@/actions/accounts/use-get-accounts";
+import { useCreateAccount } from "@/actions/accounts/use-create-account";
 import { CustomSelector } from "@/components/custom-selector";
 
 export const useSelectAccountModal = (): [

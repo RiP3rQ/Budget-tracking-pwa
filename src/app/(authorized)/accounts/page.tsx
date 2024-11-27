@@ -6,9 +6,9 @@ import { Loader2, Plus } from "lucide-react";
 
 import { DataTable } from "@/components/table/data-table";
 import { columns } from "@/components/table/accounts/columns";
-import { useGetAccounts } from "@/actions/budget/accounts/use-get-accounts";
+import { useGetAccounts } from "@/actions/accounts/use-get-accounts";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useDeleteAccounts } from "@/actions/budget/accounts/use-bulk-delete";
+import { useDeleteAccounts } from "@/actions/accounts/use-bulk-delete";
 
 const AccountsPage = () => {
   const newAccountSheet = useNewAccountSheet();

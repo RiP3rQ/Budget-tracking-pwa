@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/table/data-table-header";
-import { Actions } from "@/actions/budget/accounts/table/actions";
+import { ActionsTableColumns } from "@/components/table/accounts/actions-table-columns";
 import { SelectAccount } from "@/db/schema";
 
 export const columns: ColumnDef<SelectAccount>[] = [
@@ -48,6 +48,6 @@ export const columns: ColumnDef<SelectAccount>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <Actions row={row} />,
+    cell: ({ row }) => <ActionsTableColumns row={row} />,
   },
 ];

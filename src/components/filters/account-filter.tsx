@@ -5,8 +5,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetAccounts } from "@/actions/budget/accounts/use-get-accounts";
-import { useGetSummary } from "@/actions/budget/summary/use-get-summary";
+import { useGetAccounts } from "@/actions/accounts/use-get-accounts";
+import { useGetSummary } from "@/actions/summary/use-get-summary";
 import { parseAsString, useQueryState } from "nuqs";
 
 export const AccountFilter = () => {
