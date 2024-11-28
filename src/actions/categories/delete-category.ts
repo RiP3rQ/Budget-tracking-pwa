@@ -1,43 +1,47 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferResponseType } from "hono";
+import "server-only";
 
-import { client } from "@/lib/hono";
-import { toast } from "sonner";
+import { auth } from "@clerk/nextjs/server";
+import { db } from "@/db";
+import { categories } from "@/db/schema";
+import { and, eq } from "drizzle-orm";
 
-type ResponseType = InferResponseType<
-  (typeof client.api.categories)[":id"]["$delete"]
->;
+export type DeleteCategoryFunctionResponse = Readonly<{
+  id: number;
+  name: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}>;
+export type DeleteCategoryFunctionRequest = Readonly<{
+  id?: number;
+}>;
 
-export const deleteCategory = (id?: number) => {
-  const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error>({
-    mutationFn: async (values) => {
-      const parsedId = String(id) || undefined;
-      const response = await client.api.categories[":id"]["$delete"]({
-        param: { id: parsedId },
-      });
-      return await response.json();
-    },
-    onSuccess: () => {
-      toast.success("Pomyślnie usunięto kategorię!");
-      queryClient.invalidateQueries({
-        queryKey: [
-          "category",
-          {
-            id,
-          },
-        ],
-      });
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
-      queryClient.invalidateQueries({ queryKey: ["transactions"] });
-      queryClient.invalidateQueries({ queryKey: ["summary"] });
-      // TODO: Invaliadte analysis and transactions
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error("Wystąpił błąd podczas usuwania kategorii");
-    },
-  });
+export async function deleteCategoryFunction({
+  id,
+}: DeleteCategoryFunctionRequest): Promise<DeleteCategoryFunctionResponse> {
+  try {
+    if (!id) {
+      throw new Error("Missing id for delete account");
+    }
 
-  return mutation;
-};
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const [data] = await db
+      .delete(categories)
+      .where(and(eq(categories.userId, userId), eq(categories.id, id)))
+      .returning();
+
+    if (!data) {
+      console.error("Category not found");
+      throw new Error("Category not found");
+    }
+
+    return data;
+  } catch (e) {
+    console.error("Failed to delete category", e);
+    throw new Error("Failed to delete category");
+  }
+}

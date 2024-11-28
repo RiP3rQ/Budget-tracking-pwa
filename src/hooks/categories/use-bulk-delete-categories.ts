@@ -1,24 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
-
-import { client } from "@/lib/hono";
 import { toast } from "sonner";
-
-type ResponseType = InferResponseType<
-  (typeof client.api.categories)["bulk-delete"]["$post"]
->;
-type RequestType = InferRequestType<
-  (typeof client.api.categories)["bulk-delete"]["$post"]
->["json"];
+import {
+  bulkDeleteCategoriesFunction,
+  BulkDeleteCategoriesFunctionRequest,
+  BulkDeleteCategoriesFunctionResponse,
+} from "@/actions/categories/bulk-delete-categories";
 
 export const useDeleteCategories = () => {
   const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async (values) => {
-      const response = await client.api.categories["bulk-delete"]["$post"]({
-        json: values,
-      });
-      return await response.json();
+  const mutation = useMutation<
+    BulkDeleteCategoriesFunctionResponse,
+    Error,
+    BulkDeleteCategoriesFunctionRequest
+  >({
+    mutationFn: async ({ idsArray }) => {
+      return await bulkDeleteCategoriesFunction({ idsArray });
     },
     onSuccess: () => {
       toast.success("Usunięto kategorię!");

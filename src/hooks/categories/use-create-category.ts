@@ -1,18 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
-
-import { client } from "@/lib/hono";
 import { toast } from "sonner";
-
-type ResponseType = InferResponseType<typeof client.api.categories.$post>;
-type RequestType = InferRequestType<typeof client.api.categories.$post>["json"];
+import {
+  createCategoryFunction,
+  CreateCategoryFunctionRequest,
+  CreateCategoryFunctionResponse,
+} from "@/actions/categories/create-category";
 
 export const useCreateCategory = () => {
   const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async (values) => {
-      const response = await client.api.categories.$post({ json: values });
-      return await response.json();
+  const mutation = useMutation<
+    CreateCategoryFunctionResponse,
+    Error,
+    CreateCategoryFunctionRequest
+  >({
+    mutationFn: async ({ name, description }) => {
+      return await createCategoryFunction({ name, description });
     },
     onSuccess: () => {
       toast.success("Dodano nową kategorię!");

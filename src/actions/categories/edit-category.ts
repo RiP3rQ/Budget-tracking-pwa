@@ -1,39 +1,56 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
+import "server-only";
 
-import { client } from "@/lib/hono";
-import { toast } from "sonner";
+import { auth } from "@clerk/nextjs/server";
+import { db } from "@/db";
+import { categories } from "@/db/schema";
+import { and, eq } from "drizzle-orm";
 
-type ResponseType = InferResponseType<
-  (typeof client.api.categories)[":id"]["$patch"]
->;
-type RequestType = InferRequestType<
-  (typeof client.api.categories)[":id"]["$patch"]
->["json"];
+export type EditCategoryFunctionResponse = Readonly<{
+  id: number;
+  name: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}>;
+export type EditCategoryFunctionRequest = Readonly<{
+  id?: number;
+  name: string;
+  description?: string;
+}>;
 
-export const editCategory = (id?: number) => {
-  const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async (values) => {
-      const parsedId = String(id) || undefined;
-      const response = await client.api.categories[":id"]["$patch"]({
-        param: { id: parsedId },
-        json: values,
-      });
-      return await response.json();
-    },
-    onSuccess: () => {
-      toast.success("Pomyślnie edytowano kategorię!");
-      queryClient.invalidateQueries({ queryKey: ["category", { id }] });
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
-      queryClient.invalidateQueries({ queryKey: ["transactions"] });
-      queryClient.invalidateQueries({ queryKey: ["summary"] });
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error("Wystąpił błąd podczas edycji kategorii");
-    },
-  });
+export async function editCategoryFunction({
+  id,
+  name,
+  description,
+}: EditCategoryFunctionRequest): Promise<EditCategoryFunctionResponse> {
+  try {
+    if (!id) {
+      throw new Error("Missing id for delete account");
+    }
 
-  return mutation;
-};
+    if (!name) {
+      throw new Error("Name is required");
+    }
+
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const [data] = await db
+      .update(categories)
+      .set({ name, description: description || null })
+      .where(and(eq(categories.userId, userId), eq(categories.id, id)))
+      .returning();
+
+    if (!data) {
+      console.error("Category not found");
+      throw new Error("Category not found");
+    }
+
+    return data;
+  } catch (e) {
+    console.error("Failed to edit category", e);
+    throw new Error("Failed to edit category");
+  }
+}

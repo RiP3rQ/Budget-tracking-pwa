@@ -39,7 +39,7 @@ export async function getSingleAccountFunction({
 
     return data;
   } catch (e) {
-    console.error("Failed to edit account", e);
-    throw new Error("Failed to edit account");
+    console.error("Failed to get single account", e);
+    throw new Error("Failed to get single account");
   }
 }

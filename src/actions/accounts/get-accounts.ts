@@ -34,7 +34,7 @@ export async function getAccountsFunction(): Promise<GetAccountsFunctionResponse
 
     return data;
   } catch (e) {
-    console.error("Failed to edit account", e);
-    throw new Error("Failed to edit account");
+    console.error("Failed to get accounts", e);
+    throw new Error("Failed to get accounts");
   }
 }

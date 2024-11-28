@@ -1,29 +1,53 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
+import "server-only";
 
-import { client } from "@/lib/hono";
-import { toast } from "sonner";
+import { db } from "@/db";
+import { categories } from "@/db/schema";
+import { auth } from "@clerk/nextjs/server";
 
-type ResponseType = InferResponseType<typeof client.api.categories.$post>;
-type RequestType = InferRequestType<typeof client.api.categories.$post>["json"];
+export type CreateCategoryFunctionResponse = Readonly<{
+  name: string;
+  description: string | null;
+  userId: string;
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+}>;
+export type CreateCategoryFunctionRequest = Readonly<{
+  name: string;
+  description?: string;
+}>;
 
-export const createCategory = () => {
-  const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async (values) => {
-      const response = await client.api.categories.$post({ json: values });
-      return await response.json();
-    },
-    onSuccess: () => {
-      toast.success("Dodano nową kategorię!");
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
-      queryClient.invalidateQueries({ queryKey: ["summary"] });
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error("Wystąpił błąd podczas dodawania kategorii");
-    },
-  });
+export async function createCategoryFunction({
+  name,
+  description,
+}: CreateCategoryFunctionRequest): Promise<CreateCategoryFunctionResponse> {
+  try {
+    if (!name) {
+      throw new Error("Name is required");
+    }
 
-  return mutation;
-};
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const [data] = await db
+      .insert(categories)
+      .values({
+        name,
+        description: description || null,
+        userId: userId,
+      })
+      .returning();
+
+    if (!data) {
+      console.error("Category not found");
+      throw new Error("Category not found");
+    }
+
+    return data;
+  } catch (e) {
+    console.error("Failed to create category", e);
+    throw new Error("Failed to create category");
+  }
+}

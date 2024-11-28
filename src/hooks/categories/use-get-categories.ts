@@ -1,18 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-
-import { client } from "@/lib/hono";
+import {
+  getCategoriesFunction,
+  GetCategoriesFunctionResponse,
+} from "@/actions/categories/get-categories";
 
 export const useGetCategories = () => {
-  const query = useQuery({
+  const query = useQuery<GetCategoriesFunctionResponse, Error>({
     queryKey: ["categories"],
     queryFn: async () => {
-      const response = await client.api.categories.$get();
-      if (!response.ok) {
-        throw new Error("Error fetching categories");
-      }
-
-      const { data } = await response.json();
-      return data;
+      return await getCategoriesFunction();
     },
   });
 
