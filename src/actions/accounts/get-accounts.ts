@@ -1,20 +1,40 @@
-import { useQuery } from "@tanstack/react-query";
+import "server-only";
 
-import { client } from "@/lib/hono";
+import { auth } from "@clerk/nextjs/server";
+import { db } from "@/db";
+import { accounts } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
-export const getAccounts = () => {
-  const query = useQuery({
-    queryKey: ["accounts"],
-    queryFn: async () => {
-      const response = await client.api.accounts.$get();
-      if (!response.ok) {
-        throw new Error("Error fetching accounts");
-      }
+export type GetAccountsFunctionResponse = Readonly<
+  {
+    id: number;
+    name: string;
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }[]
+>;
 
-      const { data } = await response.json();
-      return data;
-    },
-  });
+export async function getAccountsFunction(): Promise<GetAccountsFunctionResponse> {
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
 
-  return query;
-};
+    const data = await db
+      .select()
+      .from(accounts)
+      .where(eq(accounts.userId, userId));
+
+    if (!data) {
+      console.error("Accounts not found");
+      throw new Error("Accounts not found");
+    }
+
+    return data;
+  } catch (e) {
+    console.error("Failed to edit account", e);
+    throw new Error("Failed to edit account");
+  }
+}

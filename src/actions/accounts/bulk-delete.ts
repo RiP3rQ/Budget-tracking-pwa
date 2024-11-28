@@ -1,34 +1,37 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
+import "server-only";
+import { auth } from "@clerk/nextjs/server";
+import { db } from "@/db";
+import { accounts } from "@/db/schema";
+import { and, eq } from "drizzle-orm";
+import { inArray } from "drizzle-orm/sql/expressions/conditions";
 
-import { client } from "@/lib/hono";
-import { toast } from "sonner";
+export type BulkDeleteFunctionResponse = ReadonlyArray<{ name: string }>;
+export type BulkDeleteFunctionRequest = Readonly<{
+  idsArray: number[];
+}>;
 
-type ResponseType = InferResponseType<
-  (typeof client.api.accounts)["bulk-delete"]["$post"]
->;
-type RequestType = InferRequestType<
-  (typeof client.api.accounts)["bulk-delete"]["$post"]
->["json"];
+export async function bulkDeleteFunction({
+  idsArray,
+}: BulkDeleteFunctionRequest): Promise<BulkDeleteFunctionResponse> {
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
 
-export const useDeleteAccounts = () => {
-  const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async (values) => {
-      const response = await client.api.accounts["bulk-delete"]["$post"]({
-        json: values,
-      });
-      return await response.json();
-    },
-    onSuccess: () => {
-      toast.success("Usunięto konta!");
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error("Wystąpił błąd podczas usuwania kont");
-    },
-  });
+    const data = await db
+      .delete(accounts)
+      .where(and(eq(accounts.userId, userId), inArray(accounts.id, idsArray)))
+      .returning({ name: accounts.name });
 
-  return mutation;
-};
+    if (!data) {
+      console.error("Accounts not found");
+      throw new Error("Accounts not found");
+    }
+
+    return data;
+  } catch (e) {
+    console.error("Failed to bulk delete accounts", e);
+    throw new Error("Failed to bulk delete accounts");
+  }
+}

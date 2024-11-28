@@ -1,24 +1,45 @@
-import { useQuery } from "@tanstack/react-query";
+import { auth } from "@clerk/nextjs/server";
+import { db } from "@/db";
+import { accounts } from "@/db/schema";
+import { and, eq } from "drizzle-orm";
 
-import { client } from "@/lib/hono";
+export type SingleAccountFunctionResponse = Readonly<{
+  id: number;
+  name: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}>;
+export type SingleAccountFunctionRequest = Readonly<{
+  id?: number;
+}>;
 
-export const getSingleAccount = (id?: number) => {
-  const query = useQuery({
-    enabled: !!id,
-    queryKey: ["account", { id }],
-    queryFn: async () => {
-      const parsedId = String(id) || undefined;
-      const response = await client.api.accounts[":id"].$get({
-        param: { id: parsedId },
-      });
-      if (!response.ok) {
-        throw new Error("Error fetching single account");
-      }
+export async function getSingleAccountFunction({
+  id,
+}: SingleAccountFunctionRequest): Promise<SingleAccountFunctionResponse> {
+  try {
+    if (!id) {
+      throw new Error("Id is required");
+    }
 
-      const { data } = await response.json();
-      return data;
-    },
-  });
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
 
-  return query;
-};
+    const [data] = await db
+      .select()
+      .from(accounts)
+      .where(and(eq(accounts.userId, userId), eq(accounts.id, id)));
+
+    if (!data) {
+      console.error("Accounts not found");
+      throw new Error("Accounts not found");
+    }
+
+    return data;
+  } catch (e) {
+    console.error("Failed to edit account", e);
+    throw new Error("Failed to edit account");
+  }
+}

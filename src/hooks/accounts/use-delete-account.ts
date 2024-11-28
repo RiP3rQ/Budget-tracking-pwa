@@ -1,22 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferResponseType } from "hono";
 
-import { client } from "@/lib/hono";
 import { toast } from "sonner";
+import {
+  deleteAccountFunction,
+  DeleteUserFunctionRequest,
+  DeleteUserFunctionResponse,
+} from "@/actions/accounts/delete-account";
 
-type ResponseType = InferResponseType<
-  (typeof client.api.accounts)[":id"]["$delete"]
->;
-
-export const useDeleteAccount = (id?: number) => {
+export const useDeleteAccount = () => {
   const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error>({
-    mutationFn: async (values) => {
-      const parsedId = String(id) || undefined;
-      const response = await client.api.accounts[":id"]["$delete"]({
-        param: { id: parsedId },
-      });
-      return await response.json();
+  const mutation = useMutation<
+    DeleteUserFunctionResponse,
+    Error,
+    DeleteUserFunctionRequest
+  >({
+    mutationFn: async ({ id }) => {
+      return await deleteAccountFunction({ id });
     },
     onSuccess: () => {
       toast.success("Pomyślnie usunięto konto!");

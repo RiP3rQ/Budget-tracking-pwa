@@ -1,28 +1,49 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
+import "server-only";
 
-import { client } from "@/lib/hono";
-import { toast } from "sonner";
+import { db } from "@/db";
+import { accounts } from "@/db/schema";
+import { auth } from "@clerk/nextjs/server";
 
-type ResponseType = InferResponseType<typeof client.api.accounts.$post>;
-type RequestType = InferRequestType<typeof client.api.accounts.$post>["json"];
+export type CreateUserFunctionResponse = Readonly<{
+  name: string;
+  userId: string;
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+}>;
+export type CreateUserFunctionRequest = Readonly<{
+  name: string;
+}>;
 
-export const createAccount = () => {
-  const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async (values) => {
-      const response = await client.api.accounts.$post({ json: values });
-      return await response.json();
-    },
-    onSuccess: () => {
-      toast.success("Dodano nowe konto!");
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error("Wystąpił błąd podczas dodawania konta");
-    },
-  });
+export async function createUserFunction({
+  name,
+}: CreateUserFunctionRequest): Promise<CreateUserFunctionResponse> {
+  try {
+    if (!name) {
+      throw new Error("Name is required");
+    }
 
-  return mutation;
-};
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const [data] = await db
+      .insert(accounts)
+      .values({
+        name,
+        userId,
+      })
+      .returning();
+
+    if (!data) {
+      console.error("Account not found");
+      throw new Error("Account not found");
+    }
+
+    return data;
+  } catch (e) {
+    console.error("Failed to create account", e);
+    throw new Error("Failed to create account");
+  }
+}
