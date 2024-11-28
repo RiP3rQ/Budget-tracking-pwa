@@ -1,26 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
-
-import { client } from "@/lib/hono";
 import { toast } from "sonner";
-
-type ResponseType = InferResponseType<
-  (typeof client.api.transactions)[":id"]["$patch"]
->;
-type RequestType = InferRequestType<
-  (typeof client.api.transactions)[":id"]["$patch"]
->["json"];
+import {
+  editTransactionFunction,
+  EditTransactionFunctionRequest,
+  EditTransactionFunctionResponse,
+} from "@/actions/transactions/edit-transaction";
 
 export const useEditTransaction = (id?: number) => {
   const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error, RequestType>({
+  const mutation = useMutation<
+    EditTransactionFunctionResponse,
+    Error,
+    EditTransactionFunctionRequest
+  >({
     mutationFn: async (values) => {
-      const parsedId = String(id) || undefined;
-      const response = await client.api.transactions[":id"]["$patch"]({
-        param: { id: parsedId },
-        json: values,
-      });
-      return await response.json();
+      return await editTransactionFunction(values);
     },
     onSuccess: () => {
       toast.success("Pomyślnie edytowano transakcję!");

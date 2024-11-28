@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { ImportTable } from "@/app/(dashboard)/budget/transactions/_components/import-csv/import-table";
-import { convertAmountToMiliUnits, formatDateForDb } from "@/lib/utils";
+import { formatDateForDb } from "@/lib/dates";
+import { ImportTable } from "@/app/(authorized)/transactions/_components/import-csv/import-table";
 
 type Props = {
   data: string[][];
@@ -85,7 +85,7 @@ export const ImportCard = ({ data, onCancel, onSubmit }: Props) => {
       const formattedDate = formatDateForDb(item.date);
       return {
         ...item,
-        amount: convertAmountToMiliUnits(parseFloat(item.amount)),
+        amount: parseFloat(item.amount),
         date: new Date(formattedDate),
       };
     });

@@ -4,9 +4,9 @@ import { auth } from "@clerk/nextjs/server";
 import { differenceInDays, parse, subDays } from "date-fns";
 import { fetchFinancialData } from "@/actions/analysis/fetch-financial-data";
 import { calculatePercentageChange } from "@/lib/percentages";
-import { db, sql } from "@/db";
+import { db } from "@/db";
 import { accounts, categories, transactions } from "@/db/schema";
-import { and, desc, eq, gte, lt, lte } from "drizzle-orm";
+import { and, desc, eq, gte, lt, lte, sql } from "drizzle-orm";
 import { fillMissingDays } from "@/lib/dates";
 
 export type GetAnalysisFunctionResponse = Readonly<{
@@ -127,7 +127,7 @@ export async function getAnalyticsFunction({
             ? eq(transactions.accountId, parsedAccountId)
             : undefined,
           eq(accounts.userId, userId),
-          lt(transactions.amount, 0),
+          lt(transactions.amount, "0"),
           gte(transactions.date, startDate),
           lte(transactions.date, endDate),
         ),

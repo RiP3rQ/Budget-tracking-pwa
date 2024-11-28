@@ -1,24 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
-
-import { client } from "@/lib/hono";
 import { toast } from "sonner";
-
-type ResponseType = InferResponseType<
-  (typeof client.api.transactions)["bulk-delete"]["$post"]
->;
-type RequestType = InferRequestType<
-  (typeof client.api.transactions)["bulk-delete"]["$post"]
->["json"];
+import {
+  bulkDeleteCategoriesFunction,
+  BulkDeleteTransactionsFunctionRequest,
+  BulkDeleteTransactionsFunctionResponse,
+} from "@/actions/transactions/bulk-delete-transactions";
 
 export const useDeleteTransactions = () => {
   const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error, RequestType>({
+  const mutation = useMutation<
+    BulkDeleteTransactionsFunctionResponse,
+    Error,
+    BulkDeleteTransactionsFunctionRequest
+  >({
     mutationFn: async (values) => {
-      const response = await client.api.transactions["bulk-delete"]["$post"]({
-        json: values,
-      });
-      return await response.json();
+      return await bulkDeleteCategoriesFunction(values);
     },
     onSuccess: () => {
       toast.success("Usunięto transakcję!");

@@ -6,7 +6,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { REQUIRED_COLUMNS } from "@/app/(dashboard)/budget/transactions/_components/import-csv/import-card";
+import { REQUIRED_COLUMNS } from "@/app/(authorized)/transactions/_components/import-csv/import-card";
 
 type Props = {
   columnIndex: number;

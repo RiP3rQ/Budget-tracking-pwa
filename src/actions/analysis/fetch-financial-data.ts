@@ -1,8 +1,8 @@
 "use server";
 
-import { db, sql } from "@/db";
+import { db } from "@/db";
 import { accounts, transactions } from "@/db/schema";
-import { and, eq, gte, lte } from "drizzle-orm";
+import { and, eq, gte, lte, sql } from "drizzle-orm";
 
 export type FetchFinancialDataResponse = Readonly<
   {
@@ -26,42 +26,21 @@ export async function fetchFinancialData({
   endDate,
 }: FetchFinancialDataRequest): Promise<FetchFinancialDataResponse> {
   try {
+    const sumCase = (condition: string, column: typeof transactions.amount) =>
+      sql`SUM(CASE WHEN ${column} ${sql.raw(condition)} THEN ${column} ELSE 0 END)::numeric`;
+
+    const calculateMetrics = (amount: typeof transactions.amount) => ({
+      income: sumCase(">= 0", amount),
+      expense: sumCase("< 0", amount),
+      balance: sql`SUM(${amount})`,
+      remaining: sumCase("> 0", amount),
+    });
+
+    const dateRangeFilter = (startDate: Date, endDate: Date) =>
+      and(gte(transactions.date, startDate), lte(transactions.date, endDate));
+
     const data = await db
-      .select({
-        income: sql`SUM(CASE WHEN
-            ${transactions.amount}
-            >=
-            0
-            THEN
-            ${transactions.amount}
-            ELSE
-            0
-            END
-            )::numeric`,
-        expense: sql`SUM(CASE WHEN
-            ${transactions.amount}
-            <
-            0
-            THEN
-            ${transactions.amount}
-            ELSE
-            0
-            END
-            )::numeric`,
-        balance: sql`SUM(
-            ${transactions.amount}
-            )`,
-        remaining: sql`SUM(CASE WHEN
-            ${transactions.amount}
-            >
-            0
-            THEN
-            ${transactions.amount}
-            ELSE
-            0
-            END
-            )::numeric`,
-      })
+      .select(calculateMetrics(transactions.amount))
       .from(transactions)
       .innerJoin(accounts, eq(transactions.accountId, accounts.id))
       .where(

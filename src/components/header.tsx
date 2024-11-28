@@ -4,19 +4,19 @@ import NavButton from "@/components/nav-button";
 
 const routes = [
   {
-    href: "/budget",
+    href: "/",
     label: "Budżet",
   },
   {
-    href: "/budget/transactions",
+    href: "/transactions",
     label: "Transakcje",
   },
   {
-    href: "/budget/accounts",
+    href: "/accounts",
     label: "Konta",
   },
   {
-    href: "/budget/categories",
+    href: "/categories",
     label: "Kategorie",
   },
 ];

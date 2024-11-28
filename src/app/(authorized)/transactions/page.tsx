@@ -9,13 +9,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useNewTransactionSheet } from "@/states/transactions/new-transaction-sheet-state";
 import { useDeleteTransactions } from "@/hooks/transactions/use-bulk-delete-transactions";
 import { useGetTransactions } from "@/hooks/transactions/use-get-transactions";
-import { UploadCSVButton } from "@/app/(dashboard)/budget/transactions/_components/import-csv/upload-csv-button";
 import { useState } from "react";
-import { ImportCard } from "@/app/(dashboard)/budget/transactions/_components/import-csv/import-card";
 import { transactions as transactionSchema } from "@/db/schema";
 import { useSelectAccountModal } from "@/hooks/use-select-account-modal";
 import { toast } from "sonner";
 import { useCreateManyTransactions } from "@/hooks/transactions/use-bulk-create-transactions";
+import { ImportCard } from "@/app/(authorized)/transactions/_components/import-csv/import-card";
+import { UploadCSVButton } from "@/app/(authorized)/transactions/_components/import-csv/upload-csv-button";
 
 enum VARIANTS {
   LIST = "LIST",

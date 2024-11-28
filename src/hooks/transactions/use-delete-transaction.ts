@@ -1,22 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferResponseType } from "hono";
 
-import { client } from "@/lib/hono";
 import { toast } from "sonner";
-
-type ResponseType = InferResponseType<
-  (typeof client.api.transactions)[":id"]["$delete"]
->;
+import {
+  deleteTransactionFunction,
+  DeleteTransactionFunctionRequest,
+  DeleteTransactionFunctionResponse,
+} from "@/actions/transactions/delete-transaction";
 
 export const useDeleteTransaction = (id?: number) => {
   const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error>({
+  const mutation = useMutation<
+    DeleteTransactionFunctionResponse,
+    Error,
+    DeleteTransactionFunctionRequest
+  >({
     mutationFn: async (values) => {
-      const parsedId = String(id) || undefined;
-      const response = await client.api.transactions[":id"]["$delete"]({
-        param: { id: parsedId },
-      });
-      return await response.json();
+      return await deleteTransactionFunction(values);
     },
     onSuccess: () => {
       toast.success("Pomyślnie usunięto transakcję!");

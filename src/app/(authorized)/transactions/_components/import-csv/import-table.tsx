@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { TableHeadCustomSelect } from "@/app/(dashboard)/budget/transactions/_components/import-csv/table-head-custom-select";
+import { TableHeadCustomSelect } from "@/app/(authorized)/transactions/_components/import-csv/table-head-custom-select";
 
 type Props = {
   headers: string[];

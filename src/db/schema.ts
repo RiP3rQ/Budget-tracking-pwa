@@ -94,6 +94,9 @@ export const insertTransactionsSchema = createInsertSchema(transactions, {
 });
 // TYPES
 export type NewTransaction = z.infer<typeof insertTransactionsSchema>;
+export type NewTransactionWithProperAmount = Omit<NewTransaction, "amount"> & {
+  amount: string;
+};
 export type SelectTransaction = typeof transactions.$inferSelect;
 export type FullSelectTransaction = SelectTransaction & {
   account: SelectAccount;

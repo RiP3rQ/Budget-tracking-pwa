@@ -1,31 +1,59 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
+"use server";
 
-import { client } from "@/lib/hono";
-import { toast } from "sonner";
+import { db } from "@/db";
+import { transactions } from "@/db/schema";
+import { auth } from "@clerk/nextjs/server";
 
-type ResponseType = InferResponseType<typeof client.api.transactions.$post>;
-type RequestType = InferRequestType<
-  typeof client.api.transactions.$post
->["json"];
+export type CreateTransactionsFunctionResponse = Readonly<
+  typeof transactions.$inferInsert
+>;
+export type CreateTransactionsFunctionRequest = Readonly<
+  typeof transactions.$inferInsert
+>;
 
-export const createTransaction = () => {
-  const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async (values) => {
-      const response = await client.api.transactions.$post({ json: values });
-      return await response.json();
-    },
-    onSuccess: () => {
-      toast.success("Dodano nową transakcję!");
-      queryClient.invalidateQueries({ queryKey: ["transactions"] });
-      queryClient.invalidateQueries({ queryKey: ["summary"] });
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error("Wystąpił błąd podczas dodawania transakcji");
-    },
-  });
+export async function createTransactionsFunction({
+  date,
+  amount,
+  payee,
+  accountId,
+  note,
+  categoryId,
+}: CreateTransactionsFunctionRequest): Promise<CreateTransactionsFunctionResponse> {
+  try {
+    if (!date || !amount || !payee || !accountId) {
+      throw new Error("Date, amount, payee and account are required");
+    }
 
-  return mutation;
-};
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const newTransaction = {
+      date,
+      amount,
+      payee,
+      accountId,
+      note: note || null,
+      categoryId: categoryId || null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      userId,
+    };
+
+    const [data] = await db
+      .insert(transactions)
+      .values(newTransaction)
+      .returning();
+
+    if (!data) {
+      console.error("Transaction not found");
+      throw new Error("Transaction not found");
+    }
+
+    return data;
+  } catch (e) {
+    console.error("Failed to create transaction", e);
+    throw new Error("Failed to create transaction");
+  }
+}

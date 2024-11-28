@@ -1,40 +1,51 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
+"use server";
 
-import { client } from "@/lib/hono";
-import { toast } from "sonner";
+import { db } from "@/db";
+import {
+  NewTransaction,
+  NewTransactionWithProperAmount,
+  transactions,
+} from "@/db/schema";
+import { auth } from "@clerk/nextjs/server";
 
-type ResponseType = InferResponseType<
-  (typeof client.api.transactions)["bulk-create"]["$post"]
+export type BulkCreateTransactionsFunctionResponse = Readonly<
+  NewTransactionWithProperAmount[]
 >;
-type RequestType = InferRequestType<
-  (typeof client.api.transactions)["bulk-create"]["$post"]
->["json"];
+export type BulkCreateTransactionsFunctionRequest = Readonly<{
+  values: NewTransaction[];
+}>;
 
-export const useCreateManyTransactions = () => {
-  const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async (values) => {
-      const response = await client.api.transactions["bulk-create"]["$post"]({
-        json: values,
-      });
+export async function bulkCreateTransactionsFunction({
+  values,
+}: BulkCreateTransactionsFunctionRequest): Promise<BulkCreateTransactionsFunctionResponse> {
+  try {
+    if (!values || values.length === 0) {
+      throw new Error("Values are required");
+    }
 
-      if (!response.ok) {
-        throw "Query error";
-      }
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
 
-      return await response.json();
-    },
-    onSuccess: () => {
-      toast.success("Utworzono wiele transakcji!");
-      queryClient.invalidateQueries({ queryKey: ["transactions"] });
-      queryClient.invalidateQueries({ queryKey: ["summary"] });
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error("Wystąpił błąd podczas dodawania transakcji");
-    },
-  });
+    const data = await db
+      .insert(transactions)
+      .values(
+        values.map((value) => ({
+          ...value,
+          amount: value.amount.toString(),
+        })),
+      )
+      .returning();
 
-  return mutation;
-};
+    if (!data) {
+      console.error("Transaction not found");
+      throw new Error("Transaction not found");
+    }
+
+    return data;
+  } catch (e) {
+    console.error("Failed to bulk create transaction", e);
+    throw new Error("Failed to bulk create transaction");
+  }
+}

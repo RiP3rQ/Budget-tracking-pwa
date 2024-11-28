@@ -1,29 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
-
-import { client } from "@/lib/hono";
 import { toast } from "sonner";
-
-type ResponseType = InferResponseType<
-  (typeof client.api.transactions)["bulk-create"]["$post"]
->;
-type RequestType = InferRequestType<
-  (typeof client.api.transactions)["bulk-create"]["$post"]
->["json"];
+import {
+  bulkCreateTransactionsFunction,
+  BulkCreateTransactionsFunctionRequest,
+  BulkCreateTransactionsFunctionResponse,
+} from "@/actions/transactions/bulk-create-transactions";
 
 export const useCreateManyTransactions = () => {
   const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error, RequestType>({
+  const mutation = useMutation<
+    BulkCreateTransactionsFunctionResponse,
+    Error,
+    BulkCreateTransactionsFunctionRequest
+  >({
     mutationFn: async (values) => {
-      const response = await client.api.transactions["bulk-create"]["$post"]({
-        json: values,
-      });
-
-      if (!response.ok) {
-        throw "Query error";
-      }
-
-      return await response.json();
+      return await bulkCreateTransactionsFunction(values);
     },
     onSuccess: () => {
       toast.success("Utworzono wiele transakcji!");

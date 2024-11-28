@@ -1,4 +1,4 @@
-import "server-only";
+"use server";
 
 import { db } from "@/db";
 import { categories } from "@/db/schema";

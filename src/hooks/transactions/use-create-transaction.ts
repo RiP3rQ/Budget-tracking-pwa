@@ -1,20 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
 
-import { client } from "@/lib/hono";
 import { toast } from "sonner";
-
-type ResponseType = InferResponseType<typeof client.api.transactions.$post>;
-type RequestType = InferRequestType<
-  typeof client.api.transactions.$post
->["json"];
+import {
+  createTransactionsFunction,
+  CreateTransactionsFunctionRequest,
+  CreateTransactionsFunctionResponse,
+} from "@/actions/transactions/create-transaction";
 
 export const useCreateTransaction = () => {
   const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error, RequestType>({
+  const mutation = useMutation<
+    CreateTransactionsFunctionResponse,
+    Error,
+    CreateTransactionsFunctionRequest
+  >({
     mutationFn: async (values) => {
-      const response = await client.api.transactions.$post({ json: values });
-      return await response.json();
+      return await createTransactionsFunction(values);
     },
     onSuccess: () => {
       toast.success("Dodano nową transakcję!");
