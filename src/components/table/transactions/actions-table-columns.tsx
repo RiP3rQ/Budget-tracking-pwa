@@ -10,7 +10,7 @@ import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useConfirmModal } from "@/hooks/use-confirm-modal";
 import { useEditTransactionSheet } from "@/states/transactions/single-transaction-sheet-state";
-import { useDeleteTransaction } from "@/actions/transactions/use-delete-transaction";
+import { useDeleteTransaction } from "@/hooks/transactions/use-delete-transaction";
 
 export const ActionsTableColumns = ({ row }: { row: Row<any> }) => {
   const { onOpen } = useEditTransactionSheet();

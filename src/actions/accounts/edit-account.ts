@@ -1,32 +1,36 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferResponseType } from "hono";
+import { InferRequestType, InferResponseType } from "hono";
 
 import { client } from "@/lib/hono";
 import { toast } from "sonner";
 
 type ResponseType = InferResponseType<
-  (typeof client.api.accounts)[":id"]["$delete"]
+  (typeof client.api.accounts)[":id"]["$patch"]
 >;
+type RequestType = InferRequestType<
+  (typeof client.api.accounts)[":id"]["$patch"]
+>["json"];
 
-export const useDeleteAccount = (id?: number) => {
+export const editAccount = (id?: number) => {
   const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error>({
+  const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (values) => {
       const parsedId = String(id) || undefined;
-      const response = await client.api.accounts[":id"]["$delete"]({
+      const response = await client.api.accounts[":id"]["$patch"]({
         param: { id: parsedId },
+        json: values,
       });
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("Pomyślnie usunięto konto!");
+      toast.success("Pomyślnie edytowano konto!");
+      queryClient.invalidateQueries({ queryKey: ["account", { id }] });
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
-      // TODO: Invaliadte summary and transactions
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Wystąpił błąd podczas usuwania konta");
+      toast.error("Wystąpił błąd podczas edycji konta");
     },
   });
 

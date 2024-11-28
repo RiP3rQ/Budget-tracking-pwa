@@ -5,13 +5,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetAccounts } from "@/actions/accounts/use-get-accounts";
-import { useGetSummary } from "@/actions/summary/use-get-summary";
+import { useGetAccounts } from "@/hooks/accounts/use-get-accounts";
+import { useGetAnalysis } from "@/hooks/analysis/use-get-analysis";
 import { parseAsString, useQueryState } from "nuqs";
 
 export const AccountFilter = () => {
   const { data, isLoading } = useGetAccounts();
-  const { isLoading: isLoadingSummary } = useGetSummary();
+  const { isLoading: isLoadingSummary } = useGetAnalysis();
   const [account, setAccount] = useQueryState(
     "account",
     parseAsString

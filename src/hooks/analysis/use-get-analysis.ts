@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { client } from "@/lib/hono";
 import { useSearchParams } from "next/navigation";
 
-export const useGetSummary = () => {
+export const useGetAnalysis = () => {
   const params = useSearchParams();
   const from = params.get("from") || "";
   const to = params.get("to") || "";
@@ -21,7 +21,7 @@ export const useGetSummary = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Error fetching summary");
+        throw new Error("Error fetching analysis");
       }
 
       const { data } = await response.json();

@@ -11,15 +11,15 @@ import {
 } from "@/app/(dashboard)/budget/transactions/_components/new-transaction-form";
 import { Loader2 } from "lucide-react";
 import { useConfirmModal } from "@/hooks/use-confirm-modal";
-import { useGetSingleTransaction } from "@/actions/transactions/use-get-single-transaction";
-import { useEditTransaction } from "@/actions/transactions/use-edit-transaction";
-import { useDeleteTransaction } from "@/actions/transactions/use-delete-transaction";
+import { useGetSingleTransaction } from "@/hooks/transactions/use-get-single-transaction";
+import { useEditTransaction } from "@/hooks/transactions/use-edit-transaction";
+import { useDeleteTransaction } from "@/hooks/transactions/use-delete-transaction";
 import { useEditTransactionSheet } from "@/states/transactions/single-transaction-sheet-state";
 import { convertMiliUnitsToAmount } from "@/lib/utils";
-import { useCreateAccount } from "@/actions/accounts/use-create-account";
-import { useGetAccounts } from "@/actions/accounts/use-get-accounts";
-import { useCreateCategory } from "@/actions/categories/use-create-category";
-import { useGetCategories } from "@/actions/categories/use-get-categories";
+import { useCreateAccount } from "@/hooks/accounts/use-create-account";
+import { useGetAccounts } from "@/hooks/accounts/use-get-accounts";
+import { useCreateCategory } from "@/hooks/categories/use-create-category";
+import { useGetCategories } from "@/hooks/categories/use-get-categories";
 
 export const EditTransactionSheet = () => {
   const { isOpen, onClose, id } = useEditTransactionSheet();

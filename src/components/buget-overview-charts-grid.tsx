@@ -1,9 +1,9 @@
-import { useGetSummary } from "@/actions/summary/use-get-summary";
+import { useGetAnalysis } from "@/hooks/analysis/use-get-analysis";
 import { TransactionsChartWidget } from "@/components/transactions-chart-widget";
 import { PercentageChartWidget } from "@/components/percentage-chart-widget";
 
 export const BudgetOverviewChartsGrid = () => {
-  const { data, isLoading } = useGetSummary();
+  const { data, isLoading } = useGetAnalysis();
 
   return (
     <div className={"grid grid-cols-1 lg:grid-cols-6 gap-8"}>

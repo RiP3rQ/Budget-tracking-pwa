@@ -9,7 +9,7 @@ import {
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useEditAccountSheet } from "@/states/account/single-account-sheet-state";
-import { useDeleteAccount } from "@/actions/accounts/use-delete-account";
+import { useDeleteAccount } from "@/hooks/accounts/use-delete-account";
 import { useConfirmModal } from "@/hooks/use-confirm-modal";
 
 export const ActionsTableColumns = ({ row }: { row: Row<any> }) => {

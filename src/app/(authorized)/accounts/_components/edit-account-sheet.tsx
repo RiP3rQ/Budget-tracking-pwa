@@ -10,10 +10,10 @@ import {
   FormValues,
 } from "@/app/(dashboard)/budget/accounts/_components/new-account-form";
 import { useEditAccountSheet } from "@/states/account/single-account-sheet-state";
-import { useGetSingleAccount } from "@/actions/accounts/use-get-single-account";
+import { useGetSingleAccount } from "@/hooks/accounts/use-get-single-account";
 import { Loader2 } from "lucide-react";
-import { useEditAccount } from "@/actions/accounts/use-edit-account";
-import { useDeleteAccount } from "@/actions/accounts/use-delete-account";
+import { useEditAccount } from "@/hooks/accounts/use-edit-account";
+import { useDeleteAccount } from "@/hooks/accounts/use-delete-account";
 import { useConfirmModal } from "@/hooks/use-confirm-modal";
 
 export const EditAccountSheet = () => {

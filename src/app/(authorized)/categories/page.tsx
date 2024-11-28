@@ -7,8 +7,8 @@ import { DataTable } from "@/components/table/data-table";
 import { columns } from "@/components/table/categories/columns";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNewCategorySheet } from "@/states/categories/new-category-sheet-state";
-import { useDeleteCategories } from "@/actions/categories/use-bulk-delete-categories";
-import { useGetCategories } from "@/actions/categories/use-get-categories";
+import { useDeleteCategories } from "@/hooks/categories/use-bulk-delete-categories";
+import { useGetCategories } from "@/hooks/categories/use-get-categories";
 
 const CategoriesPage = () => {
   const newCategorySheet = useNewCategorySheet();

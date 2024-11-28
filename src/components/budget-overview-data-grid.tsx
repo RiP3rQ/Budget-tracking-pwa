@@ -1,11 +1,11 @@
-import { useGetSummary } from "@/actions/summary/use-get-summary";
+import { useGetAnalysis } from "@/hooks/analysis/use-get-analysis";
 import { formatDateRange } from "@/lib/dates";
 import { GridDataCard } from "@/components/grid-data-card";
 import { PiggyBankIcon, TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
 export const BudgetOverviewDataGrid = () => {
-  const { data, isLoading } = useGetSummary();
+  const { data, isLoading } = useGetAnalysis();
   const params = useSearchParams();
   const from = params.get("dateFrom") || "";
   const to = params.get("dateTo") || "";

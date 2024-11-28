@@ -10,11 +10,11 @@ import {
   ApiFormValues,
   TransactionForm,
 } from "@/app/(dashboard)/budget/transactions/_components/new-transaction-form";
-import { useCreateTransaction } from "@/actions/transactions/use-create-transaction";
-import { useGetCategories } from "@/actions/categories/use-get-categories";
-import { useCreateCategory } from "@/actions/categories/use-create-category";
-import { useCreateAccount } from "@/actions/accounts/use-create-account";
-import { useGetAccounts } from "@/actions/accounts/use-get-accounts";
+import { useCreateTransaction } from "@/hooks/transactions/use-create-transaction";
+import { useGetCategories } from "@/hooks/categories/use-get-categories";
+import { useCreateCategory } from "@/hooks/categories/use-create-category";
+import { useCreateAccount } from "@/hooks/accounts/use-create-account";
+import { useGetAccounts } from "@/hooks/accounts/use-get-accounts";
 import { Loader2 } from "lucide-react";
 
 export const NewTransactionSheet = () => {
