@@ -1,3 +1,5 @@
+"use client";
+
 import { useGetAnalysis } from "@/hooks/analysis/use-get-analysis";
 import { TransactionsChartWidget } from "@/components/transactions-chart-widget";
 import { PercentageChartWidget } from "@/components/percentage-chart-widget";

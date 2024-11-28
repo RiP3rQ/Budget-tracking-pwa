@@ -4,7 +4,7 @@ import {
   RadialBarChart,
   ResponsiveContainer,
 } from "recharts";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency } from "@/lib/currencies";
 
 const COLORS = ["#3d82f6", "#f43f5e", "#12c6ff", "#ff9354"];
 

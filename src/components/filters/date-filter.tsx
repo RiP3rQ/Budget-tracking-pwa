@@ -1,3 +1,5 @@
+"use client";
+
 import { subDays } from "date-fns";
 import {
   Popover,

@@ -1,3 +1,5 @@
+"use client";
+
 import { useGetAnalysis } from "@/hooks/analysis/use-get-analysis";
 import { formatDateRange } from "@/lib/dates";
 import { GridDataCard } from "@/components/grid-data-card";

@@ -1,4 +1,5 @@
-import "server-only";
+"use server";
+
 import { db, sql } from "@/db";
 import { accounts, transactions } from "@/db/schema";
 import { and, eq, gte, lte } from "drizzle-orm";

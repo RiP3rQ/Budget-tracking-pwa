@@ -1,6 +1,6 @@
-import { BudgetOverviewDataGrid } from "@/app/(dashboard)/budget/_components/budget-overview-data-grid";
-import { BudgetOverviewChartsGrid } from "@/app/(dashboard)/budget/_components/buget-overview-charts-grid";
-import { BudgetFilters } from "@/app/(dashboard)/budget/_components/budget-filters";
+import { BudgetFilters } from "@/components/filters/budget-filters";
+import { BudgetOverviewDataGrid } from "@/components/budget-overview-data-grid";
+import { BudgetOverviewChartsGrid } from "@/components/buget-overview-charts-grid";
 
 export default function BudgetPage() {
   return (

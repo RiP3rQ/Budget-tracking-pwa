@@ -18,7 +18,18 @@ export function fillMissingDays(
 
   const transactionsByDay = allDays.map((day) => {
     const transaction = activeDats.find((d) => isSameDay(d.date, day));
-    return transaction || { date: day, income: 0, expense: 0 };
+    const formattedTransaction = transaction && {
+      date: transaction.date.toDateString(),
+      income: transaction.income,
+      expense: transaction.expense,
+    };
+    return (
+      formattedTransaction || {
+        date: new Date(day).toDateString(),
+        income: 0,
+        expense: 0,
+      }
+    );
   });
 
   return transactionsByDay;

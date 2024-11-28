@@ -6,8 +6,8 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { formatPercentage } from "@/lib/utils";
 import { CustomPercentageTooltip } from "@/components/charts/percentage-custom-tooltip";
+import { formatPercentage } from "@/lib/percentages";
 
 const COLORS = ["#3d82f6", "#f43f5e", "#12c6ff", "#ff9354"];
 

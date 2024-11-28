@@ -1,4 +1,5 @@
-import "server-only";
+"use server";
+
 import { auth } from "@clerk/nextjs/server";
 import { differenceInDays, parse, subDays } from "date-fns";
 import { fetchFinancialData } from "@/actions/analysis/fetch-financial-data";
@@ -32,7 +33,7 @@ export type GetAnalysisFunctionResponse = Readonly<{
     value: number;
   }>;
   days: Array<{
-    date: Date;
+    date: string;
     income: number;
     expense: number;
   }>;

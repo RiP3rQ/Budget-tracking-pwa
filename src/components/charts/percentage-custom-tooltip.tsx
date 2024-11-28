@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency } from "@/lib/currencies";
 
 export const CustomPercentageTooltip = ({ active, payload }: any) => {
   if (!active) return null;

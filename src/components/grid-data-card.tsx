@@ -1,5 +1,5 @@
 import { cva, VariantProps } from "class-variance-authority";
-import { IconType } from "react-icons";
+
 import {
   Card,
   CardContent,
@@ -7,10 +7,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { cn, formatCurrency, formatPercentage } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { CountUp } from "@/components/count-up";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { LucideIcon } from "lucide-react";
+import { formatCurrency } from "@/lib/currencies";
+import { formatPercentage } from "@/lib/percentages";
 
 const boxVariants = cva("rounded-md p-3 shrink-0", {
   variants: {
@@ -48,7 +51,7 @@ interface DataCardProps extends BoxVariants, IconVariants {
   value?: number | string;
   currency?: string;
   percentageChange?: number | string;
-  icon: IconType;
+  icon: LucideIcon;
   dateRange: string;
   isLoading?: boolean;
 }
