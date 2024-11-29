@@ -11,9 +11,9 @@ import { auth } from "@clerk/nextjs/server";
 export type BulkCreateTransactionsFunctionResponse = Readonly<
   NewTransactionWithProperAmount[]
 >;
-export type BulkCreateTransactionsFunctionRequest = Readonly<{
+export type BulkCreateTransactionsFunctionRequest = {
   values: NewTransaction[];
-}>;
+};
 
 export async function bulkCreateTransactionsFunction({
   values,

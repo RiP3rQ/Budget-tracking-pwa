@@ -5,43 +5,54 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import {
-  AccountForm,
-  FormValues,
-} from "@/app/(dashboard)/budget/accounts/_components/new-account-form";
 import { useEditAccountSheet } from "@/states/account/single-account-sheet-state";
 import { useGetSingleAccount } from "@/hooks/accounts/use-get-single-account";
 import { Loader2 } from "lucide-react";
 import { useEditAccount } from "@/hooks/accounts/use-edit-account";
 import { useDeleteAccount } from "@/hooks/accounts/use-delete-account";
 import { useConfirmModal } from "@/hooks/use-confirm-modal";
+import {
+  AccountForm,
+  FormValues,
+} from "@/app/(authorized)/accounts/_components/new-account-form";
 
 export const EditAccountSheet = () => {
   const { isOpen, onClose, id } = useEditAccountSheet();
   const accountQuery = useGetSingleAccount(id);
   const editMutation = useEditAccount(id);
-  const deleteMutation = useDeleteAccount(id);
+  const deleteMutation = useDeleteAccount();
   const [ConfirmationDialog, confirm] = useConfirmModal(
     "Usuń konto!",
     "Czy na pewno chcesz usunąć konto? Wszystkie transakcje związane z tym kontem zostaną usunięte.",
   );
 
   const onSubmit = (values: FormValues) => {
-    editMutation.mutate(values, {
-      onSuccess: () => {
-        onClose();
+    editMutation.mutate(
+      {
+        id,
+        name: values.name,
       },
-    });
+      {
+        onSuccess: () => {
+          onClose();
+        },
+      },
+    );
   };
 
   const onDelete = async () => {
     const ok = await confirm();
     if (ok) {
-      deleteMutation.mutate(undefined, {
-        onSuccess: () => {
-          onClose();
+      deleteMutation.mutate(
+        {
+          id,
         },
-      });
+        {
+          onSuccess: () => {
+            onClose();
+          },
+        },
+      );
     }
   };
 

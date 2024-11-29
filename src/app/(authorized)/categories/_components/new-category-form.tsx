@@ -80,13 +80,14 @@ export const CategoryForm = ({
             <FormItem>
               <FormLabel>Opis</FormLabel>
               <FormControl>
-                {/* @ts-ignore */}
                 <Input
                   disabled={disabled}
                   placeholder={
                     "np. Wydatki na jedzenie, Przychody z wynagrodzenia"
                   }
+                  type={"text"}
                   {...field}
+                  value={field.value ?? ""}
                 />
               </FormControl>
             </FormItem>

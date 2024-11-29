@@ -45,7 +45,7 @@ const CategoriesPage = () => {
         <CardHeader
           className={"gap-y-2 lg:flex-row lg:items-center lg:justify-between"}
         >
-          <CardTitle>Kategories</CardTitle>
+          <CardTitle>Kategorie</CardTitle>
           <Button
             onClick={newCategorySheet.onOpen}
             variant="default"
@@ -62,7 +62,7 @@ const CategoriesPage = () => {
             filterKey={"Name"}
             onDelete={(row) => {
               const ids = row.map((r) => r.original.id);
-              deleteCategories.mutate({ ids });
+              deleteCategories.mutate({ idsArray: ids });
             }}
             disabled={isDisabled}
           />

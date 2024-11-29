@@ -6,11 +6,11 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useNewAccountSheet } from "@/states/account/new-account-sheet-state";
+import { useCreateAccount } from "@/hooks/accounts/use-create-account";
 import {
   AccountForm,
   FormValues,
-} from "@/app/(dashboard)/budget/accounts/_components/new-account-form";
-import { useCreateAccount } from "@/hooks/accounts/use-create-account";
+} from "@/app/(authorized)/accounts/_components/new-account-form";
 
 export const NewAccountSheet = () => {
   const { isOpen, onClose } = useNewAccountSheet();

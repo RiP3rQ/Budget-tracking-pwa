@@ -16,14 +16,16 @@ import { CustomDatePicker } from "@/components/custom-datepicker";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CustomCurrencyInput } from "@/components/currency-input";
-import { convertAmountToMiliUnits, formatDateForDb } from "@/lib/utils";
+import { formatDateForDb } from "@/lib/dates";
+import { useAuth } from "@clerk/nextjs";
 
 const formSchema = z.object({
   date: z.coerce.date(),
   accountId: z.string(),
   categoryId: z.string().nullable().optional(),
   payee: z.string(),
-  amount: z.string(),
+  // float with 2 decimal places
+  amount: z.string().regex(/^\d+(\.\d{1,2})?$/),
   note: z.string().nullable().optional(),
 });
 
@@ -62,25 +64,24 @@ export const TransactionForm = ({
   onCreateAccount,
   onCreateCategory,
 }: Props) => {
+  const { userId } = useAuth();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues,
   });
 
   const handleSubmit = (values: FormValues) => {
-    const amountInMiliunits = convertAmountToMiliUnits(
-      parseFloat(values.amount),
-    );
     const formattedDate = formatDateForDb(values.date);
     onSubmit({
       ...values,
-      amount: amountInMiliunits,
+      amount: parseFloat(values.amount),
       categoryId:
         values.categoryId === null || values.categoryId === undefined
           ? null
           : parseInt(values.categoryId),
       accountId: parseInt(values.accountId),
       date: new Date(formattedDate),
+      userId: userId!,
     });
   };
 

@@ -5,16 +5,16 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import {
-  CategoryForm,
-  FormValues,
-} from "@/app/(dashboard)/budget/categories/_components/new-category-form";
 import { Loader2 } from "lucide-react";
 import { useConfirmModal } from "@/hooks/use-confirm-modal";
 import { useGetSingleCategory } from "@/hooks/categories/use-get-single-category";
 import { useEditCategory } from "@/hooks/categories/use-edit-category";
 import { useDeleteCategory } from "@/hooks/categories/use-delete-category";
 import { useEditCategorySheet } from "@/states/categories/single-category-sheet-state";
+import {
+  CategoryForm,
+  FormValues,
+} from "@/app/(authorized)/categories/_components/new-category-form";
 
 export const EditCategorySheet = () => {
   const { isOpen, onClose, id } = useEditCategorySheet();
@@ -27,21 +27,33 @@ export const EditCategorySheet = () => {
   );
 
   const onSubmit = (values: FormValues) => {
-    editMutation.mutate(values, {
-      onSuccess: () => {
-        onClose();
+    editMutation.mutate(
+      {
+        id,
+        name: values.name,
+        description: values.description,
       },
-    });
+      {
+        onSuccess: () => {
+          onClose();
+        },
+      },
+    );
   };
 
   const onDelete = async () => {
     const ok = await confirm();
     if (ok) {
-      deleteMutation.mutate(undefined, {
-        onSuccess: () => {
-          onClose();
+      deleteMutation.mutate(
+        {
+          id,
         },
-      });
+        {
+          onSuccess: () => {
+            onClose();
+          },
+        },
+      );
     }
   };
 

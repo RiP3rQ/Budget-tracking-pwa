@@ -35,19 +35,24 @@ export const columns: ColumnDef<SelectAccount>[] = [
   },
   {
     accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Wartość" />
+    ),
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
-      const formatted = new Intl.NumberFormat("en-US", {
+      const formatted = new Intl.NumberFormat("pl-PL", {
         style: "currency",
-        currency: "USD",
+        currency: "PLN",
       }).format(amount);
 
-      return <div className="text-right font-medium">{formatted}</div>;
+      return <div className="font-medium">{formatted}</div>;
     },
   },
   {
     id: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Akcje" />
+    ),
     cell: ({ row }) => <ActionsTableColumns row={row} />,
   },
 ];

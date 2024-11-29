@@ -6,19 +6,34 @@ import { accounts, categories, transactions } from "@/db/schema";
 import { and, eq, gte, lte } from "drizzle-orm";
 import moment from "moment";
 
-export type GetTransactionsFunctionResponse = Readonly<
-  {
+export type GetTransactionsFunctionResponse = {
+  id: number;
+  categoryId: number | null;
+  category: {
     id: number;
-    categoryId: number | null;
-    category: string | null;
-    note: string | null;
-    amount: string;
-    accountId: number;
-    account: string;
-    date: Date;
-    payee: string;
-  }[]
->;
+    name: string;
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+    description: string | null;
+  } | null;
+  note: string | null;
+  amount: string;
+  accountId: number;
+  account: {
+    id: number;
+    name: string;
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  date: Date;
+  payee: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}[];
+
 export type GetTransactionsFunctionRequest = Readonly<{
   dateFrom?: string;
   dateTo?: string;
@@ -46,13 +61,16 @@ export async function getTransactionsFunction({
       .select({
         id: transactions.id,
         categoryId: transactions.categoryId,
-        category: categories.name,
+        category: categories,
         note: transactions.note,
         amount: transactions.amount,
         accountId: transactions.accountId,
-        account: accounts.name,
+        account: accounts,
         date: transactions.date,
         payee: transactions.payee,
+        userId: transactions.userId,
+        createdAt: transactions.createdAt,
+        updatedAt: transactions.updatedAt,
       })
       .from(transactions)
       .leftJoin(categories, eq(transactions.categoryId, categories.id))

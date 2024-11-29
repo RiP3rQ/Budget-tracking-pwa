@@ -5,9 +5,14 @@ import { db } from "@/db";
 import { categories } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-export type GetCategoriesFunctionResponse = Readonly<
-  { id: number; name: string; description: string | null; userId: string }[]
->;
+export type GetCategoriesFunctionResponse = {
+  id: number;
+  name: string;
+  description: string | null;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}[];
 
 export async function getCategoriesFunction(): Promise<GetCategoriesFunctionResponse> {
   try {
@@ -22,6 +27,8 @@ export async function getCategoriesFunction(): Promise<GetCategoriesFunctionResp
         name: categories.name,
         description: categories.description,
         userId: categories.userId,
+        createdAt: categories.createdAt,
+        updatedAt: categories.updatedAt,
       })
       .from(categories)
       .where(eq(categories.userId, userId));

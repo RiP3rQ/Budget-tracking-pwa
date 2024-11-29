@@ -39,6 +39,8 @@ const AccountsPage = () => {
     );
   }
 
+  console.log(accounts);
+
   return (
     <div className={"max-w-screen-2xl mx-auto w-full pb-10"}>
       <Card className={"border-none drop-shadow-sm"}>
@@ -59,10 +61,10 @@ const AccountsPage = () => {
           <DataTable
             columns={columns}
             data={accounts}
-            filterKey={"Email"}
+            filterKey={"nazwie"}
             onDelete={(row) => {
               const ids = row.map((r) => r.original.id);
-              deleteAccounts.mutate({ ids });
+              deleteAccounts.mutate({ idsArray: ids });
             }}
             disabled={isDisabled}
           />

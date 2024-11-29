@@ -15,7 +15,7 @@ export type EditCategoryFunctionResponse = Readonly<{
 export type EditCategoryFunctionRequest = Readonly<{
   id?: number;
   name: string;
-  description?: string;
+  description?: string | null;
 }>;
 
 export async function editCategoryFunction({

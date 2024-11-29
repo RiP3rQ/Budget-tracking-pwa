@@ -6,16 +6,16 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useNewTransactionSheet } from "@/states/transactions/new-transaction-sheet-state";
-import {
-  ApiFormValues,
-  TransactionForm,
-} from "@/app/(dashboard)/budget/transactions/_components/new-transaction-form";
 import { useCreateTransaction } from "@/hooks/transactions/use-create-transaction";
 import { useGetCategories } from "@/hooks/categories/use-get-categories";
 import { useCreateCategory } from "@/hooks/categories/use-create-category";
 import { useCreateAccount } from "@/hooks/accounts/use-create-account";
 import { useGetAccounts } from "@/hooks/accounts/use-get-accounts";
 import { Loader2 } from "lucide-react";
+import {
+  ApiFormValues,
+  TransactionForm,
+} from "@/app/(authorized)/transactions/_components/new-transaction-form";
 
 export const NewTransactionSheet = () => {
   const { isOpen, onClose } = useNewTransactionSheet();
@@ -47,11 +47,17 @@ export const NewTransactionSheet = () => {
 
   const onSubmit = (values: ApiFormValues) => {
     console.log("values", values);
-    createMutation.mutate(values, {
-      onSuccess: () => {
-        onClose();
+    createMutation.mutate(
+      {
+        ...values,
+        amount: String(values.amount),
       },
-    });
+      {
+        onSuccess: () => {
+          onClose();
+        },
+      },
+    );
   };
 
   return (

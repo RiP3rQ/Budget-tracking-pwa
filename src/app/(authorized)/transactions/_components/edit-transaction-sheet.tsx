@@ -5,21 +5,20 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import {
-  ApiFormValues,
-  TransactionForm,
-} from "@/app/(dashboard)/budget/transactions/_components/new-transaction-form";
 import { Loader2 } from "lucide-react";
 import { useConfirmModal } from "@/hooks/use-confirm-modal";
 import { useGetSingleTransaction } from "@/hooks/transactions/use-get-single-transaction";
 import { useEditTransaction } from "@/hooks/transactions/use-edit-transaction";
 import { useDeleteTransaction } from "@/hooks/transactions/use-delete-transaction";
 import { useEditTransactionSheet } from "@/states/transactions/single-transaction-sheet-state";
-import { convertMiliUnitsToAmount } from "@/lib/utils";
 import { useCreateAccount } from "@/hooks/accounts/use-create-account";
 import { useGetAccounts } from "@/hooks/accounts/use-get-accounts";
 import { useCreateCategory } from "@/hooks/categories/use-create-category";
 import { useGetCategories } from "@/hooks/categories/use-get-categories";
+import {
+  ApiFormValues,
+  TransactionForm,
+} from "@/app/(authorized)/transactions/_components/new-transaction-form";
 
 export const EditTransactionSheet = () => {
   const { isOpen, onClose, id } = useEditTransactionSheet();
@@ -61,21 +60,33 @@ export const EditTransactionSheet = () => {
     transactionsQuery.isLoading;
 
   const onSubmit = (values: ApiFormValues) => {
-    editMutation.mutate(values, {
-      onSuccess: () => {
-        onClose();
+    editMutation.mutate(
+      {
+        id,
+        ...values,
+        amount: String(values.amount),
       },
-    });
+      {
+        onSuccess: () => {
+          onClose();
+        },
+      },
+    );
   };
 
   const onDelete = async () => {
     const ok = await confirm();
     if (ok) {
-      deleteMutation.mutate(undefined, {
-        onSuccess: () => {
-          onClose();
+      deleteMutation.mutate(
+        {
+          id,
         },
-      });
+        {
+          onSuccess: () => {
+            onClose();
+          },
+        },
+      );
     }
   };
 
@@ -83,7 +94,7 @@ export const EditTransactionSheet = () => {
     ? {
         categoryId: String(transactionsQuery.data.categoryId),
         note: transactionsQuery.data.note,
-        amount: String(convertMiliUnitsToAmount(transactionsQuery.data.amount)),
+        amount: String(transactionsQuery.data.amount),
         accountId: String(transactionsQuery.data.accountId),
         date: transactionsQuery.data.date
           ? new Date(transactionsQuery.data.date)

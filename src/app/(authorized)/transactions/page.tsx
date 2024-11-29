@@ -68,13 +68,19 @@ const TransactionsPage = () => {
     const data = values.map((value) => ({
       ...value,
       accountId: parseInt(accountId as string),
+      amount: parseFloat(value.amount),
     }));
 
-    createTransactions.mutate(data, {
-      onSuccess: () => {
-        onCancelImport();
+    createTransactions.mutate(
+      {
+        values: data,
       },
-    });
+      {
+        onSuccess: () => {
+          onCancelImport();
+        },
+      },
+    );
   };
 
   if (transactionsQuery.isLoading) {
@@ -132,12 +138,13 @@ const TransactionsPage = () => {
         </CardHeader>
         <CardContent>
           <DataTable
+            // @ts-ignore
             columns={columns}
             data={transactions}
             filterKey={"payee"}
             onDelete={(row) => {
               const ids = row.map((r) => r.original.id);
-              deleteTransactions.mutate({ ids });
+              deleteTransactions.mutate({ idsArray: ids });
             }}
             disabled={isDisabled}
           />

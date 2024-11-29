@@ -13,7 +13,7 @@ export type EditUserFunctionResponse = Readonly<{
   updatedAt: Date;
 }>;
 export type EditUserFunctionRequest = Readonly<{
-  id: number;
+  id?: number;
   name: string;
 }>;
 

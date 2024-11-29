@@ -40,6 +40,12 @@ export const columns: ColumnDef<SelectCategory>[] = [
     ),
   },
   {
+    accessorKey: "updatedAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Zaktualizowano" />
+    ),
+  },
+  {
     id: "actions",
     cell: ({ row }) => <ActionsTableColumns row={row} />,
   },

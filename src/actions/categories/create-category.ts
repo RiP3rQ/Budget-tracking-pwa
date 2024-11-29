@@ -14,7 +14,7 @@ export type CreateCategoryFunctionResponse = Readonly<{
 }>;
 export type CreateCategoryFunctionRequest = Readonly<{
   name: string;
-  description?: string;
+  description?: string | null;
 }>;
 
 export async function createCategoryFunction({

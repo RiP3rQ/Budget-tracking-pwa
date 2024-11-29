@@ -12,11 +12,9 @@ import { inArray } from "drizzle-orm/sql/expressions/conditions";
 
 export type EditTransactionFunctionResponse =
   Readonly<NewTransactionWithProperAmount>;
-export type EditTransactionFunctionRequest = Readonly<
-  {
-    id: number;
-  } & typeof transactions.$inferInsert
->;
+export type EditTransactionFunctionRequest = {
+  id?: number;
+} & typeof transactions.$inferInsert;
 
 export async function editTransactionFunction({
   id,
@@ -28,6 +26,10 @@ export async function editTransactionFunction({
   categoryId,
 }: EditTransactionFunctionRequest): Promise<EditTransactionFunctionResponse> {
   try {
+    if (!id) {
+      throw new Error("Id is required");
+    }
+
     if (!date || !amount || !payee || !accountId) {
       throw new Error("Date, amount, payee and account are required");
     }

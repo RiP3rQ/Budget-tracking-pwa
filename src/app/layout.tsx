@@ -6,6 +6,7 @@ import { QueryProvider } from "@/providers/query-provider";
 import ToastProvider from "@/providers/toast-provider";
 import NextTopLoader from "nextjs-toploader";
 import { NuqsProvider } from "@/providers/nuqs-provider";
+import { SheetProvider } from "@/providers/sheet-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -46,6 +47,7 @@ export default function RootLayout({
             <QueryProvider>
               <NextTopLoader color={"#10b981"} showSpinner={false} />
               {children}
+              <SheetProvider />
               <ToastProvider />
             </QueryProvider>
           </NuqsProvider>

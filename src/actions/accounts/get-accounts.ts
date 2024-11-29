@@ -2,18 +2,17 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
-import { accounts } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { accounts, transactions } from "@/db/schema";
+import { eq, sql } from "drizzle-orm";
 
-export type GetAccountsFunctionResponse = Readonly<
-  {
-    id: number;
-    name: string;
-    userId: string;
-    createdAt: Date;
-    updatedAt: Date;
-  }[]
->;
+export type GetAccountsFunctionResponse = {
+  id: number;
+  name: string;
+  userId: string;
+  amount: number;
+  createdAt: Date;
+  updatedAt: Date;
+}[];
 
 export async function getAccountsFunction(): Promise<GetAccountsFunctionResponse> {
   try {
@@ -23,9 +22,24 @@ export async function getAccountsFunction(): Promise<GetAccountsFunctionResponse
     }
 
     const data = await db
-      .select()
+      .select({
+        id: accounts.id,
+        name: accounts.name,
+        userId: accounts.userId,
+        amount: sql<number>`COALESCE(SUM(${transactions.amount}), 0)`,
+        createdAt: accounts.createdAt,
+        updatedAt: accounts.updatedAt,
+      })
       .from(accounts)
-      .where(eq(accounts.userId, userId));
+      .leftJoin(transactions, eq(accounts.id, transactions.accountId))
+      .where(eq(accounts.userId, userId))
+      .groupBy(
+        accounts.id,
+        accounts.name,
+        accounts.userId,
+        accounts.createdAt,
+        accounts.updatedAt,
+      );
 
     if (!data) {
       console.error("Accounts not found");

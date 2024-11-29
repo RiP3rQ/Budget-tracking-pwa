@@ -6,11 +6,11 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useNewCategorySheet } from "@/states/categories/new-category-sheet-state";
+import { useCreateCategory } from "@/hooks/categories/use-create-category";
 import {
   CategoryForm,
   FormValues,
-} from "@/app/(dashboard)/budget/categories/_components/new-category-form";
-import { useCreateCategory } from "@/hooks/categories/use-create-category";
+} from "@/app/(authorized)/categories/_components/new-category-form";
 
 export const NewCategorySheet = () => {
   const { isOpen, onClose } = useNewCategorySheet();
