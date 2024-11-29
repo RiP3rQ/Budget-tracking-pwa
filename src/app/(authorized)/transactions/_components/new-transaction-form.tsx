@@ -6,6 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -20,13 +21,52 @@ import { formatDateForDb } from "@/lib/dates";
 import { useAuth } from "@clerk/nextjs";
 
 const formSchema = z.object({
-  date: z.coerce.date(),
-  accountId: z.string(),
-  categoryId: z.string().nullable().optional(),
-  payee: z.string(),
-  // float with 2 decimal places
-  amount: z.string().regex(/^\d+(\.\d{1,2})?$/),
-  note: z.string().nullable().optional(),
+  date: z.coerce.date({
+    errorMap: () => ({ message: "Nieprawidłowa data" }),
+  }),
+  accountId: z
+    .string({
+      required_error: "Konto jest wymagane",
+      invalid_type_error: "Nieprawidłowy format konta",
+    })
+    .min(1, "Konto jest wymagane"),
+
+  categoryId: z
+    .string({
+      invalid_type_error: "Nieprawidłowy format kategorii",
+    })
+    .min(1, "Kategoria jest wymagana")
+    .nullable()
+    .optional(),
+
+  payee: z
+    .string({
+      required_error: "Odbiorca/nadawca jest wymagany",
+      invalid_type_error: "Nieprawidłowy format odbiorcy/nadawcy",
+    })
+    .min(1, "Odbiorca/nadawca jest wymagany")
+    .max(100, "Nazwa odbiorcy/nadawcy nie może przekraczać 100 znaków"),
+
+  // TODO: FIX THIS SCHEMA FUNCTIONALITY WITH CUSTOM CURRENCY VALUE INPUT COMPONENT
+  amount: z
+    .string({
+      required_error: "Kwota jest wymagana",
+      invalid_type_error: "Kwota musi być liczbą",
+    })
+    .regex(
+      /^-?\d+(\.\d{1,2})?$/,
+      "Kwota musi być liczbą z maksymalnie dwoma miejscami po przecinku",
+    )
+    .refine((val) => !isNaN(parseFloat(val)), "Nieprawidłowy format kwoty")
+    .refine((val) => parseFloat(val) !== 0, "Kwota nie może być równa 0"),
+
+  note: z
+    .string({
+      invalid_type_error: "Nieprawidłowy format notatki",
+    })
+    .max(500, "Notatka nie może przekraczać 500 znaków")
+    .nullable()
+    .optional(),
 });
 
 const apiSchema = insertTransactionsSchema.omit({ id: true });
@@ -52,9 +92,9 @@ export const TransactionForm = ({
     date: new Date(),
     amount: "0",
     payee: "",
-    note: "",
+    note: null,
     categoryId: null,
-    accountId: "0",
+    accountId: "",
   },
   onSubmit,
   onDelete,
@@ -109,6 +149,7 @@ export const TransactionForm = ({
                   disabled={disabled}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -128,6 +169,7 @@ export const TransactionForm = ({
                   disabled={disabled}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -147,6 +189,7 @@ export const TransactionForm = ({
                   disabled={disabled}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -164,6 +207,7 @@ export const TransactionForm = ({
                   placeholder={"Wpisz kwotę..."}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -180,6 +224,7 @@ export const TransactionForm = ({
                   placeholder={"Wybierz odbiorcę ..."}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -197,6 +242,7 @@ export const TransactionForm = ({
                   placeholder={"Napisz opcjonalną notatkę..."}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />

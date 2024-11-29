@@ -3,6 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/table/data-table-header";
 import { ActionsTableColumns } from "@/components/table/categories/actions-table-columns";
 import { SelectCategory } from "@/db/schema";
+import moment from "moment";
 
 export const columns: ColumnDef<SelectCategory>[] = [
   {
@@ -44,9 +45,18 @@ export const columns: ColumnDef<SelectCategory>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Zaktualizowano" />
     ),
+    cell: ({ row }) => {
+      const updatedAt = row.getValue("updatedAt") as string;
+      const formatted = moment(updatedAt).format("DD.MM.YYYY HH:mm");
+
+      return <div>{formatted}</div>;
+    },
   },
   {
     id: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Akcje" />
+    ),
     cell: ({ row }) => <ActionsTableColumns row={row} />,
   },
 ];

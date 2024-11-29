@@ -23,7 +23,7 @@ export const ActionsTableColumns = ({ row }: { row: Row<any> }) => {
   const handleDelete = async () => {
     const ok = await confirm();
     if (ok) {
-      deleteMutation.mutate(undefined);
+      deleteMutation.mutate({ id: row.original.id });
     }
   };
 

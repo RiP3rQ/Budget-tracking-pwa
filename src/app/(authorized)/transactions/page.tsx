@@ -141,7 +141,7 @@ const TransactionsPage = () => {
             // @ts-ignore
             columns={columns}
             data={transactions}
-            filterKey={"payee"}
+            filterKey={"kategorii"}
             onDelete={(row) => {
               const ids = row.map((r) => r.original.id);
               deleteTransactions.mutate({ idsArray: ids });
