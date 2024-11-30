@@ -43,12 +43,13 @@ export default function RootLayout({
         <head>
           <meta
             http-equiv="Content-Security-Policy"
-            content="default-src 'self';
-           connect-src 'self' https://splendid-dove-30.clerk.accounts.dev;
-           script-src 'self' 'unsafe-inline' https://splendid-dove-30.clerk.accounts.dev blob:;
-           style-src 'self' 'unsafe-inline';
-           worker-src 'self' blob:;
-           img-src 'self' https://img.clerk.com;"
+            content="
+              default-src 'self';
+              connect-src 'self' https://*.clerk.accounts.dev https://img.clerk.com;
+              script-src 'self' 'unsafe-inline' https://splendid-dove-30.clerk.accounts.dev blob:;
+              style-src 'self' 'unsafe-inline';
+              worker-src 'self' blob:;
+              img-src 'self' https://img.clerk.com;"
           />
         </head>
         <body

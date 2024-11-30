@@ -23,12 +23,23 @@ export function PushNotificationManager() {
   }, []);
 
   async function registerServiceWorker() {
-    const registration = await navigator.serviceWorker.register("/sw.js", {
-      scope: "/",
-      updateViaCache: "none",
-    });
-    const sub = await registration.pushManager.getSubscription();
-    setSubscription(sub);
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") {
+        console.error("Permission not granted for Notification");
+        return;
+      }
+
+      const registration = await navigator.serviceWorker.register("/sw.js", {
+        scope: "/",
+        updateViaCache: "none",
+      });
+
+      const sub = await registration.pushManager.getSubscription();
+      setSubscription(sub);
+    } catch (error) {
+      console.error("Service Worker registration failed:", error);
+    }
   }
 
   async function subscribeToPush() {
