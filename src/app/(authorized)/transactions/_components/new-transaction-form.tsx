@@ -133,7 +133,7 @@ export const TransactionForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className={"space-y-4 pt-4"}
+        className={"space-y-4 pt-4 text-muted-foreground"}
       >
         <FormField
           name={"date"}
