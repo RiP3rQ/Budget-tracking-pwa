@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# 📲📈 Budget-Tracking-PWA 🏦
 
-First, run the development server:
+## Description
+A simple and modern, feature-rich Progressive Web Application for personal finance management and budget tracking.
+
+## Tech stack
+
+- **Next.js 15**
+- **React 19**
+- **Typescript**
+- **Tailwindcss**
+- **Shadcn UI**
+- **Recharts**
+- **Drizzle**
+- **Clerk**
+
+## Features
+
+- **Progressive Web App Capabilities**: Experience native app-like functionality with real-time push notifications, offline support, and seamless cross-device synchronization for your financial tracking needs.
+- **Push notifications**: Stay informed about your financial activity with instant alerts for transactions, budget limits, and custom reminders.
+- **CSV mass import**: Streamline your financial record-keeping by effortlessly importing hundreds of transactions from bank statements in seconds.
+- **Chart analytics**:  Visualize your financial journey through interactive charts that transform complex spending data into actionable insights.
+
+## Installation
+
+Install and run "Budget-tracking-pwa" with pnpm:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  cd [Project_name]
+  pnpm i
+  pnpm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### DB
+`DATABASE_URL`=
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+#### Clerk Auth
+`NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`=
 
-## Learn More
+`CLERK_PUBLISHABLE_KEY`=
 
-To learn more about Next.js, take a look at the following resources:
+`CLERK_SECRET_KEY`=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`NEXT_PUBLIC_CLERK_SIGN_IN_URL`=
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`NEXT_PUBLIC_CLERK_SIGN_UP_URL`=
 
-## Deploy on Vercel
+#### App
+`NEXT_PUBLIC_APP_URL`=
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### Service-worker
+`NEXT_PUBLIC_VAPID_PUBLIC_KEY`=
+`VAPID_PUBLIC_KEY`=
+`VAPID_PRIVATE_KEY`=
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+## Screenshots
+
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracker-pwa/refs/heads/main/public/screenshots/1.png?token=GHSAT0AAAAAACX5KLDEYSRP6CSDWDQX6YPAZ2M4DQQ)
+
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracker-pwa/refs/heads/main/public/screenshots/2.png?token=GHSAT0AAAAAACX5KLDEWV6HER5CEHH3NVVIZ2M4D6Q)
+
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracker-pwa/refs/heads/main/public/screenshots/3.png?token=GHSAT0AAAAAACX5KLDEOTXLCF7YYQANSQ4SZ2M4EAQ)
+
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracker-pwa/refs/heads/main/public/screenshots/4.png?token=GHSAT0AAAAAACX5KLDEC5LCHNWX3ARR4COQZ2M4ECA)
+
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracker-pwa/refs/heads/main/public/screenshots/5.png?token=GHSAT0AAAAAACX5KLDFHSYJMLLDKVWGFHYGZ2M4EDQ)
+
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracker-pwa/refs/heads/main/public/screenshots/6.png?token=GHSAT0AAAAAACX5KLDE4RTF225J3ACLKUPKZ2M4EGQ)
+
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracker-pwa/refs/heads/main/public/screenshots/7.png?token=GHSAT0AAAAAACX5KLDFLX5TYD2SSVCXVYBKZ2M4EJA)
