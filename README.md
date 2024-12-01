@@ -2,7 +2,7 @@
 # 📲📈 Budget-Tracking-PWA 🏦
 
 ## Description
-A simple and modern, feature-rich Progressive Web Application for personal finance management and budget tracking.
+A simple and modern, feature-rich Progressive Web Application for personal finance management and budget tracking. Made for college purposes only.
 
 ## Tech stack
 
@@ -60,16 +60,16 @@ Install and run "Budget-tracking-pwa" with pnpm:
 
 ## Screenshots
 
-![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracker-pwa/refs/heads/main/public/screenshots/1.png?token=GHSAT0AAAAAACX5KLDEYSRP6CSDWDQX6YPAZ2M4DQQ)
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/1.png?token=GHSAT0AAAAAACX5KLDEJ3NFC7ZSPJABFYWEZ2M4QCA)
 
-![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracker-pwa/refs/heads/main/public/screenshots/2.png?token=GHSAT0AAAAAACX5KLDEWV6HER5CEHH3NVVIZ2M4D6Q)
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/2.png?token=GHSAT0AAAAAACX5KLDFQQBRLHE25D4JC6RQZ2M4Q4Q)
 
-![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracker-pwa/refs/heads/main/public/screenshots/3.png?token=GHSAT0AAAAAACX5KLDEOTXLCF7YYQANSQ4SZ2M4EAQ)
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/3.png?token=GHSAT0AAAAAACX5KLDFIWZNFDDSCUJUY6OEZ2M4Q5Q)
 
-![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracker-pwa/refs/heads/main/public/screenshots/4.png?token=GHSAT0AAAAAACX5KLDEC5LCHNWX3ARR4COQZ2M4ECA)
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/4.png?token=GHSAT0AAAAAACX5KLDERT6NAMSVMGLUZA4UZ2M4Q6Q)
 
-![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracker-pwa/refs/heads/main/public/screenshots/5.png?token=GHSAT0AAAAAACX5KLDFHSYJMLLDKVWGFHYGZ2M4EDQ)
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/5.png?token=GHSAT0AAAAAACX5KLDF2RSEX4IQGXLJYCPKZ2M4Q7Q)
 
-![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracker-pwa/refs/heads/main/public/screenshots/6.png?token=GHSAT0AAAAAACX5KLDE4RTF225J3ACLKUPKZ2M4EGQ)
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/6.png?token=GHSAT0AAAAAACX5KLDF367AO5CF3IX2VQIQZ2M4RBA)
 
-![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracker-pwa/refs/heads/main/public/screenshots/7.png?token=GHSAT0AAAAAACX5KLDFLX5TYD2SSVCXVYBKZ2M4EJA)
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/7.png?token=GHSAT0AAAAAACX5KLDF7OLIP3A2YPJ7MSO4Z2M4RCA)
