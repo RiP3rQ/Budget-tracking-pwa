@@ -15,7 +15,7 @@ export const AccountFilter = () => {
   const { data, isLoading } = useGetAccounts();
   const { isLoading: isLoadingSummary } = useGetAnalysis();
   const [account, setAccount] = useQueryState(
-    "account",
+    "accountId",
     parseAsString
       .withOptions({
         shallow: true,

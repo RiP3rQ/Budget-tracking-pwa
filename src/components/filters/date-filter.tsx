@@ -17,7 +17,7 @@ import { formatDateRange } from "@/lib/dates";
 
 export const DateFilter = () => {
   const [dateFrom, setDateFrom] = useQueryState(
-    "from",
+    "dateFrom",
     parseAsIsoDate
       .withOptions({
         shallow: true,
@@ -25,7 +25,7 @@ export const DateFilter = () => {
       .withDefault(new Date()),
   );
   const [dateTo, setDateTo] = useQueryState(
-    "to",
+    "dateTo",
     parseAsIsoDate
       .withOptions({
         shallow: true,
