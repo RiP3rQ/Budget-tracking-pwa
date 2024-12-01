@@ -3,8 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
 import { accounts, categories, transactions } from "@/db/schema";
-import { and, eq, gte, lte } from "drizzle-orm";
-import moment from "moment";
+import { eq } from "drizzle-orm";
 
 export type GetTransactionsFunctionResponse = {
   id: number;
@@ -34,29 +33,12 @@ export type GetTransactionsFunctionResponse = {
   updatedAt: Date;
 }[];
 
-export type GetTransactionsFunctionRequest = Readonly<{
-  dateFrom?: string;
-  dateTo?: string;
-  accountId?: string;
-}>;
-
-export async function getTransactionsFunction({
-  dateFrom,
-  dateTo,
-  accountId,
-}: GetTransactionsFunctionRequest): Promise<GetTransactionsFunctionResponse> {
+export async function getTransactionsFunction(): Promise<GetTransactionsFunctionResponse> {
   try {
     const { userId } = await auth();
     if (!userId) {
       throw new Error("Unauthorized");
     }
-
-    const defaultTo = new Date();
-    const defaultFrom = moment(defaultTo).subtract(1, "month").toDate();
-
-    const startDate = dateFrom ? moment(dateFrom).toDate() : defaultFrom;
-    const endDate = dateTo ? moment(dateTo).toDate() : defaultTo;
-
     const data = await db
       .select({
         id: transactions.id,
@@ -75,14 +57,7 @@ export async function getTransactionsFunction({
       .from(transactions)
       .leftJoin(categories, eq(transactions.categoryId, categories.id))
       .innerJoin(accounts, eq(transactions.accountId, accounts.id))
-      .where(
-        and(
-          accountId ? eq(transactions.accountId, Number(accountId)) : undefined,
-          eq(accounts.userId, userId),
-          gte(transactions.date, startDate),
-          lte(transactions.date, endDate),
-        ),
-      );
+      .where(eq(accounts.userId, userId));
 
     if (!data) {
       console.error("Categories not found");
