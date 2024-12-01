@@ -1,8 +1,17 @@
 "use client";
+import { scan } from "react-scan"; // import this BEFORE react
+import React from "react";
 
 import { useGetAnalysis } from "@/hooks/analysis/use-get-analysis";
 import { TransactionsChartWidget } from "@/components/transactions-chart-widget";
 import { PercentageChartWidget } from "@/components/percentage-chart-widget";
+
+if (typeof window !== "undefined") {
+  scan({
+    enabled: true,
+    log: true, // logs render info to console (default: false)
+  });
+}
 
 export const BudgetOverviewChartsGrid = () => {
   const { data, isLoading } = useGetAnalysis();

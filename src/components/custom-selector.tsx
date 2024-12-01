@@ -32,7 +32,7 @@ export const CustomSelector = ({
   return (
     <CreatableSelect
       placeholder={placeholder}
-      className={"text-sm h-10"}
+      className={"text-sm h-10 text-muted"}
       styles={{
         control: (base) => ({
           ...base,
