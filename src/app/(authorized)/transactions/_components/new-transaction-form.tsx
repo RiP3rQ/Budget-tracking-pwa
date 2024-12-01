@@ -47,7 +47,6 @@ const formSchema = z.object({
     .min(1, "Odbiorca/nadawca jest wymagany")
     .max(100, "Nazwa odbiorcy/nadawcy nie może przekraczać 100 znaków"),
 
-  // TODO: FIX THIS SCHEMA FUNCTIONALITY WITH CUSTOM CURRENCY VALUE INPUT COMPONENT
   amount: z
     .string({
       required_error: "Kwota jest wymagana",
@@ -69,6 +68,7 @@ const formSchema = z.object({
     .optional(),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const apiSchema = insertTransactionsSchema.omit({ id: true });
 
 export type FormValues = z.infer<typeof formSchema>;

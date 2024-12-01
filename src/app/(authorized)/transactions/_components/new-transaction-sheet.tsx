@@ -46,7 +46,6 @@ export const NewTransactionSheet = () => {
   const isLoading = categoryQuery.isLoading || accountsQuery.isLoading;
 
   const onSubmit = (values: ApiFormValues) => {
-    console.log("values", values);
     createMutation.mutate(
       {
         ...values,

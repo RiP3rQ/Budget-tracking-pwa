@@ -1,4 +1,4 @@
-import { eachDayOfInterval, format, isSameDay, set, subDays } from "date-fns";
+import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
 import { pl } from "date-fns/locale";
 
 export function fillMissingDays(
@@ -36,17 +36,6 @@ export function fillMissingDays(
 }
 
 export function formatDateForDb(date: Date) {
-  // Parse the date string
-  const originalDate = new Date(date);
-  // Set the time to T00:00:00.000
-  const updatedDate = set(originalDate, {
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    milliseconds: 0,
-  });
-  // Format the updated date to ISO 8601
-  const formattedDate = format(updatedDate, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
   return format(date, "yyyy-MM-dd");
 }
 

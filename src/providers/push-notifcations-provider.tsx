@@ -97,9 +97,6 @@ export function PushNotificationProvider({
     message: string,
     subscription?: PushSubscriptionWithKeys,
   ) {
-    console.log("Sending push notification");
-    console.log("Message:", message);
-    console.log("Subscription:", subscription);
     if (!subscription) {
       console.error("No push subscription available");
       return;

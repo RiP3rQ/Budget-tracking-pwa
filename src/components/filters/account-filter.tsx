@@ -12,11 +12,6 @@ import { useGetAccounts } from "@/hooks/accounts/use-get-accounts";
 import { useGetAnalysis } from "@/hooks/analysis/use-get-analysis";
 import { useAccountFilterState } from "@/hooks/use-account-filter-state";
 
-interface Account {
-  id: number;
-  name: string;
-}
-
 interface AccountFilterProps {
   className?: string;
   onAccountChange?: (accountId: string) => void;

@@ -1,11 +1,22 @@
 import { Separator } from "@/components/ui/separator";
 import { formatCurrency } from "@/lib/currencies";
+import {
+  NameType,
+  Payload,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 
-export const CustomPercentageTooltip = ({ active, payload }: any) => {
+export const CustomPercentageTooltip = ({
+  active,
+  payload,
+}: {
+  active?: boolean;
+  payload?: Payload<ValueType, NameType>[];
+}) => {
   if (!active) return null;
 
-  const name = payload[0].payload.name;
-  const value = payload[0].value;
+  const name = payload?.[0].payload.name;
+  const value = payload?.[0].value;
 
   return (
     <div className={"rounded-sm bg-white shadow-sm border overflow-hidden"}>
@@ -21,7 +32,7 @@ export const CustomPercentageTooltip = ({ active, payload }: any) => {
             <p className={"text-sm text-muted-foreground"}>Wydatki</p>
           </div>
           <p className={"text-sm text-muted-foreground font-medium text-right"}>
-            {formatCurrency(value * -1)}
+            {formatCurrency(Number(value) * -1)}
           </p>
         </div>
       </div>

@@ -37,7 +37,6 @@ const TransactionsPage = () => {
     typeof INITIAL_IMPORT_RESULT
   >(INITIAL_IMPORT_RESULT);
   const onUpload = (results: typeof INITIAL_IMPORT_RESULT) => {
-    console.log(results);
     setImportResult(results);
     setVariant(VARIANTS.IMPORT);
   };
@@ -52,8 +51,6 @@ const TransactionsPage = () => {
   const deleteTransactions = useDeleteTransactions();
   const transactionsQuery = useGetTransactions();
   const transactions = transactionsQuery.data ?? [];
-
-  console.log(transactions);
 
   const isDisabled =
     deleteTransactions.isPending || transactionsQuery.isLoading;

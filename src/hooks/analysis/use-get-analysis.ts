@@ -23,5 +23,3 @@ export const useGetAnalysis = () => {
 
   return query;
 };
-
-// TODO: ERROR HANDLING IN WHOLE APP

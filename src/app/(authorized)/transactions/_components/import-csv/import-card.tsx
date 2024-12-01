@@ -59,7 +59,6 @@ export const ImportCard = ({ data, onCancel, onSubmit }: Props) => {
         .map((row) => {
           const transformedRow = row.map((cell, cellIndex) => {
             const columnIndex = getColumnIndex(`column_${cellIndex}`);
-            const column = selectedColumns[`column_${columnIndex}`];
             return selectedColumns[`column_${columnIndex}`] ? cell : null;
           });
 
@@ -71,21 +70,24 @@ export const ImportCard = ({ data, onCancel, onSubmit }: Props) => {
     };
 
     const arrayOfData = mappedData.body.map((row) => {
-      return row.reduce((acc: any, cell, index) => {
-        const header = mappedData.headers[index];
-        if (header !== null) {
-          acc[header] = cell;
-        }
+      return row.reduce(
+        (acc: Record<string, Date | string | null>, cell, index) => {
+          const header = mappedData.headers[index];
+          if (header !== null) {
+            acc[header] = cell;
+          }
 
-        return acc;
-      }, {});
+          return acc;
+        },
+        {},
+      );
     });
 
     const formattedFinalData = arrayOfData.map((item) => {
-      const formattedDate = formatDateForDb(item.date);
+      const formattedDate = formatDateForDb(new Date(item.date ?? ""));
       return {
         ...item,
-        amount: parseFloat(item.amount),
+        amount: parseFloat(String(item.amount)),
         date: new Date(formattedDate),
       };
     });

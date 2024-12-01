@@ -26,7 +26,7 @@ export const useDeleteAccount = () => {
       );
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
-      // TODO: Invaliadte analysis and transactions
+      queryClient.invalidateQueries({ queryKey: ["summary"] });
     },
     onError: (error) => {
       console.error(error);

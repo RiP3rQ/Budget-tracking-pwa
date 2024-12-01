@@ -34,7 +34,6 @@ export const useDeleteCategory = (id?: number) => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["summary"] });
-      // TODO: Invaliadte analysis and transactions
     },
     onError: (error) => {
       console.error(error);

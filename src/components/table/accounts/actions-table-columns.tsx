@@ -11,10 +11,11 @@ import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useEditAccountSheet } from "@/states/account/single-account-sheet-state";
 import { useDeleteAccount } from "@/hooks/accounts/use-delete-account";
 import { useConfirmModal } from "@/hooks/use-confirm-modal";
+import { SelectAccount } from "@/db/schema";
 
-export const ActionsTableColumns = ({ row }: { row: Row<any> }) => {
+export const ActionsTableColumns = ({ row }: { row: Row<SelectAccount> }) => {
   const { onOpen } = useEditAccountSheet();
-  const deleteMutation = useDeleteAccount(row.original.id);
+  const deleteMutation = useDeleteAccount();
   const [ConfirmationDialog, confirm] = useConfirmModal(
     "Usuń konto!",
     "Czy na pewno chcesz usunąć konto? Wszystkie transakcje związane z tym kontem zostaną usunięte.",
@@ -23,7 +24,7 @@ export const ActionsTableColumns = ({ row }: { row: Row<any> }) => {
   const handleDelete = async () => {
     const ok = await confirm();
     if (ok) {
-      deleteMutation.mutate(undefined);
+      deleteMutation.mutate({ id: row.original.id });
     }
   };
 
