@@ -7,20 +7,6 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  const url = new URL(event.request.url);
-
-  // Check if the request URL includes either "clerk.accounts.dev" or "img.clerk.com"
-  if (
-    url.hostname.includes("clerk.accounts.dev") ||
-    url.hostname.includes("img.clerk.com")
-  ) {
-    console.log(
-      "Skipping service worker for Clerk.js or Clerk image request:",
-      event.request.url,
-    );
-    return; // Let the browser handle these requests directly
-  }
-
   event.respondWith(fetch(event.request));
 });
 
