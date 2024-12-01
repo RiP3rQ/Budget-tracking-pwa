@@ -5,7 +5,7 @@ export const BudgetFilters = () => {
   return (
     <div
       className={
-        "flex flex-col lg:flex-row items-center gap-y-2 lg:gap-y-0 lg:gap-x-2"
+        "flex flex-col lg:flex-row items-center gap-y-2 lg:gap-y-0 lg:gap-x-2 mb-2"
       }
     >
       <AccountFilter />

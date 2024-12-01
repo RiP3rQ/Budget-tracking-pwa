@@ -22,7 +22,7 @@ export const ImportTable = ({
   onTableHeadSelectChange,
 }: Props) => {
   return (
-    <div className={"rounded-md border overflow-hidden"}>
+    <div className={"rounded-md border overflow-hidden "}>
       <Table>
         <TableHeader className={"bg-muted"}>
           <TableRow>

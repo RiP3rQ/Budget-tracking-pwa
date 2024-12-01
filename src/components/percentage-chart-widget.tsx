@@ -43,7 +43,7 @@ export const PercentageChartWidget = ({ data, title, isLoading }: Props) => {
   };
 
   return (
-    <Card className={"border-none drop-shadow-sm"}>
+    <Card className={"border border-gray-300 drop-shadow-sm"}>
       <CardHeader
         className={
           "flex space-y-2 lg:space-y-0 lg:flex-row lg:items-center justify-between"

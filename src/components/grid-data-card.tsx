@@ -73,7 +73,7 @@ export const GridDataCard = ({
   if (isLoading) return <GridDataCardLoading />;
 
   return (
-    <Card className={"border-none drop-shadow-sm"}>
+    <Card className={"border border-gray-300 drop-shadow-sm"}>
       <CardHeader
         className={"flex flex-row items-center justify-between gap-x-4"}
       >
@@ -88,7 +88,13 @@ export const GridDataCard = ({
         </div>
       </CardHeader>
       <CardContent>
-        <h1 className={"font-bold text-2xl mb-2 line-clamp-1 break-all"}>
+        <h1
+          className={cn(
+            "font-bold text-2xl mb-2 line-clamp-1 break-all",
+            // check if values is expense (contains minus sign) and change color
+            value?.toString().includes("-") && "text-rose-500",
+          )}
+        >
           {value === undefined ||
           value === null ||
           value === "" ||
@@ -110,7 +116,7 @@ export const GridDataCard = ({
         </h1>
         {percentageChangeNumber && (
           <Badge
-            className={cn("cursor-pointer", {
+            className={cn("cursor-pointer rounded-full", {
               "bg-emerald-500 hover:bg-emerald-700":
                 percentageChangeNumber >= 0,
               "bg-rose-500 hover:bg-rose-700": percentageChangeNumber < 0,

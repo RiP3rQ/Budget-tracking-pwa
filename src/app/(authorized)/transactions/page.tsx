@@ -71,8 +71,6 @@ const TransactionsPage = () => {
 
     if (!accountId) return toast.error("Proszę wybrać konto, aby kontynuować");
 
-    console.log(values, accountId);
-
     const data = values.map((value) => ({
       ...value,
       accountId: parseInt(accountId as string),
@@ -127,7 +125,7 @@ const TransactionsPage = () => {
 
   return (
     <div className={"max-w-screen-2xl mx-auto w-full pb-10"}>
-      <Card className={"border-none drop-shadow-sm"}>
+      <Card className={"border border-gray-300 drop-shadow-sm"}>
         <CardHeader
           className={"gap-y-2 lg:flex-row lg:items-center lg:justify-between"}
         >
