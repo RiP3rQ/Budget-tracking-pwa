@@ -45,6 +45,7 @@ export const BudgetOverviewDataGrid = () => {
         variant={"default"}
         dateRange={dateRangeLabel}
         isLoading={isLoading}
+        reverseColors
       />
     </div>
   );

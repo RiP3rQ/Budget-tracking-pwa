@@ -4,14 +4,12 @@ import { db } from "@/db";
 import { accounts, transactions } from "@/db/schema";
 import { and, eq, gte, lte, sql } from "drizzle-orm";
 
-export type FetchFinancialDataResponse = Readonly<
-  {
-    income: number;
-    expense: number;
-    balance: number;
-    remaining: number;
-  }[]
->;
+export type FetchFinancialDataResponse = Readonly<{
+  income: number;
+  expense: number;
+  balance: number;
+  remaining: number;
+}>;
 export type FetchFinancialDataRequest = Readonly<{
   userId: string;
   accountId?: number;
@@ -26,21 +24,42 @@ export async function fetchFinancialData({
   endDate,
 }: FetchFinancialDataRequest): Promise<FetchFinancialDataResponse> {
   try {
-    const sumCase = (condition: string, column: typeof transactions.amount) =>
-      sql`SUM(CASE WHEN ${column} ${sql.raw(condition)} THEN ${column} ELSE 0 END)::numeric`;
-
-    const calculateMetrics = (amount: typeof transactions.amount) => ({
-      income: sumCase(">= 0", amount),
-      expense: sumCase("< 0", amount),
-      balance: sql`SUM(${amount})`,
-      remaining: sumCase("> 0", amount),
-    });
-
-    const dateRangeFilter = (startDate: Date, endDate: Date) =>
-      and(gte(transactions.date, startDate), lte(transactions.date, endDate));
-
-    const data = await db
-      .select(calculateMetrics(transactions.amount))
+    const [data] = await db
+      .select({
+        income: sql`SUM(CASE WHEN
+            ${transactions.amount}
+            >=
+            0
+            THEN
+            ${transactions.amount}
+            ELSE
+            0
+            END
+            )`.mapWith(Number),
+        expense: sql`SUM(CASE WHEN
+            ${transactions.amount}
+            <
+            0
+            THEN
+            ${transactions.amount}
+            ELSE
+            0
+            END
+            )`.mapWith(Number),
+        balance: sql`SUM(
+            ${transactions.amount}
+            )`.mapWith(Number),
+        remaining: sql`SUM(CASE WHEN
+            ${transactions.amount}
+            >
+            0
+            THEN
+            ${transactions.amount}
+            ELSE
+            0
+            END
+            )`.mapWith(Number),
+      })
       .from(transactions)
       .innerJoin(accounts, eq(transactions.accountId, accounts.id))
       .where(
@@ -52,12 +71,14 @@ export async function fetchFinancialData({
         ),
       );
 
-    return data.map((row) => ({
-      income: Number(row.income) || 0,
-      expense: Number(row.expense) || 0,
-      balance: Number(row.balance) || 0,
-      remaining: Number(row.remaining) || 0,
-    }));
+    console.log(data);
+
+    return {
+      income: data.income || 0,
+      expense: data.expense || 0,
+      balance: data.balance || 0,
+      remaining: data.remaining || 0,
+    };
   } catch (e) {
     console.error("Failed to fetch financial data", e);
     throw new Error("Failed to fetch financial data");

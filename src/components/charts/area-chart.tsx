@@ -18,6 +18,7 @@ type Props = {
 };
 
 export const AreaChartVariant = ({ data }: Props) => {
+  console.log("@AreaChartVariant", data);
   return (
     <ResponsiveContainer width="100%" height={384}>
       <AreaChart data={data}>
@@ -40,7 +41,7 @@ export const AreaChartVariant = ({ data }: Props) => {
           style={{ fontSize: "0.75rem" }}
           tickMargin={16}
         />
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip content={CustomTooltip} />
         <Area
           type={"monotone"}
           dataKey={"expense"}

@@ -54,6 +54,7 @@ interface DataCardProps extends BoxVariants, IconVariants {
   icon: LucideIcon;
   dateRange: string;
   isLoading?: boolean;
+  reverseColors?: boolean;
 }
 
 export const GridDataCard = ({
@@ -65,8 +66,8 @@ export const GridDataCard = ({
   dateRange,
   variant,
   isLoading,
+  reverseColors = false,
 }: DataCardProps) => {
-  // TODO: REVERSE COLORS ON EXPENSES
   const percentageChangeNumber =
     typeof percentageChange === "string" ? undefined : Number(percentageChange);
 
@@ -118,8 +119,9 @@ export const GridDataCard = ({
           <Badge
             className={cn("cursor-pointer rounded-full", {
               "bg-emerald-500 hover:bg-emerald-700":
-                percentageChangeNumber >= 0,
-              "bg-rose-500 hover:bg-rose-700": percentageChangeNumber < 0,
+                percentageChangeNumber >= 0 && !reverseColors,
+              "bg-rose-500 hover:bg-rose-700":
+                percentageChangeNumber < 0 || reverseColors,
             })}
           >
             {formatPercentage(percentageChangeNumber, { addPrefix: true })}

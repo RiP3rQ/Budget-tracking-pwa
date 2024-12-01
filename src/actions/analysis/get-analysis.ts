@@ -73,13 +73,13 @@ export async function getAnalyticsFunction({
     const parsedAccountId = accountId ? parseInt(accountId, 10) : undefined;
 
     // periods data fetching
-    const [currentPeriodData] = await fetchFinancialData({
+    const currentPeriodData = await fetchFinancialData({
       userId: userId,
       accountId: parsedAccountId,
       startDate: startDate,
       endDate: endDate,
     });
-    const [lastPeriodData] = await fetchFinancialData({
+    const lastPeriodData = await fetchFinancialData({
       userId: userId,
       accountId: parsedAccountId,
       startDate: lastPeriodStart,
