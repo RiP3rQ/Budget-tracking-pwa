@@ -5,6 +5,7 @@ import {
   BulkDeleteCategoriesFunctionRequest,
   BulkDeleteCategoriesFunctionResponse,
 } from "@/actions/categories/bulk-delete-categories";
+import { notificationUtil } from "@/lib/send-toast-and-push-notification";
 
 export const useDeleteCategories = () => {
   const queryClient = useQueryClient();
@@ -16,8 +17,12 @@ export const useDeleteCategories = () => {
     mutationFn: async ({ idsArray }) => {
       return await bulkDeleteCategoriesFunction({ idsArray });
     },
-    onSuccess: () => {
-      toast.success("Usunięto kategorię!");
+    onSuccess: async () => {
+      await notificationUtil.SendToastAndPushNotification(
+        "success",
+        "Usunięto wiele kategorii!",
+        { duration: 5000 },
+      );
       queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
     onError: (error) => {

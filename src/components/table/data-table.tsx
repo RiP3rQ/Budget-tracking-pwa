@@ -32,6 +32,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   filterKey: string;
+  filterKeyPlaceholder?: string;
   onDelete: (rows: Row<TData>[]) => void;
   disabled?: boolean;
 }
@@ -40,6 +41,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   filterKey,
+  filterKeyPlaceholder,
   onDelete,
   disabled,
 }: DataTableProps<TData, TValue>) {
@@ -77,37 +79,39 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <ConfirmDialog />
-      <div className="flex items-center py-4">
+      <div className="flex items-center justify-between py-4">
         <Input
-          placeholder={`Sortuj po ${filterKey}...`}
+          placeholder={filterKeyPlaceholder}
           value={(table.getColumn(filterKey)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn(filterKey)?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        {table.getFilteredSelectedRowModel().rows.length > 0 && (
-          <Button
-            disabled={disabled}
-            size="sm"
-            variant="outline"
-            className={"ml-auto font-normal text-xs"}
-            onClick={async () => {
-              const ok = await confirm();
+        <div className={"flex items-center space-x-2"}>
+          {table.getFilteredSelectedRowModel().rows.length > 0 && (
+            <Button
+              disabled={disabled}
+              size="sm"
+              variant="outline"
+              className={"ml-auto font-normal text-xs"}
+              onClick={async () => {
+                const ok = await confirm();
 
-              if (ok) {
-                onDelete(table.getFilteredSelectedRowModel().rows);
-                table.resetRowSelection();
-              }
-            }}
-          >
-            <Trash className="mr-2 size-4" />
-            Usuń ({
-              table.getFilteredSelectedRowModel().rows.length
-            })
-          </Button>
-        )}
-        <DataTableViewOptions table={table} />
+                if (ok) {
+                  onDelete(table.getFilteredSelectedRowModel().rows);
+                  table.resetRowSelection();
+                }
+              }}
+            >
+              <Trash className="mr-2 size-4" />
+              Usuń wiele({
+                table.getFilteredSelectedRowModel().rows.length
+              })
+            </Button>
+          )}
+          <DataTableViewOptions table={table} />
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>

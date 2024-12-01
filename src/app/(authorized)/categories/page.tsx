@@ -65,7 +65,8 @@ const CategoriesPage = () => {
           <DataTable
             columns={columns}
             data={categories}
-            filterKey={"nazwie"}
+            filterKey={"name"}
+            filterKeyPlaceholder={"Filtruj po nazwie..."}
             onDelete={(row) => {
               const ids = row.map((r) => r.original.id);
               deleteCategories.mutate({ idsArray: ids });

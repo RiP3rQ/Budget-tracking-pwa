@@ -33,12 +33,14 @@ export const columns: ColumnDef<SelectCategory>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Nazwa" />
     ),
+    filterFn: "includesString",
   },
   {
     accessorKey: "description",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Opis" />
     ),
+    filterFn: "includesString",
   },
   {
     accessorKey: "updatedAt",

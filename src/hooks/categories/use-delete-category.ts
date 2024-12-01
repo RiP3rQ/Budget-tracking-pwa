@@ -5,6 +5,7 @@ import {
   DeleteCategoryFunctionRequest,
   DeleteCategoryFunctionResponse,
 } from "@/actions/categories/delete-category";
+import { notificationUtil } from "@/lib/send-toast-and-push-notification";
 
 export const useDeleteCategory = (id?: number) => {
   const queryClient = useQueryClient();
@@ -16,8 +17,12 @@ export const useDeleteCategory = (id?: number) => {
     mutationFn: async () => {
       return await deleteCategoryFunction({ id });
     },
-    onSuccess: () => {
-      toast.success("Pomyślnie usunięto kategorię!");
+    onSuccess: async () => {
+      await notificationUtil.SendToastAndPushNotification(
+        "success",
+        "Usunięto kategorię!",
+        { duration: 5000 },
+      );
       queryClient.invalidateQueries({
         queryKey: [
           "category",

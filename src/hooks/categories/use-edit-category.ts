@@ -5,6 +5,7 @@ import {
   EditCategoryFunctionRequest,
   EditCategoryFunctionResponse,
 } from "@/actions/categories/edit-category";
+import { notificationUtil } from "@/lib/send-toast-and-push-notification";
 
 export const useEditCategory = (id?: number) => {
   const queryClient = useQueryClient();
@@ -16,8 +17,12 @@ export const useEditCategory = (id?: number) => {
     mutationFn: async ({ name, description }) => {
       return await editCategoryFunction({ id, name, description });
     },
-    onSuccess: () => {
-      toast.success("Pomyślnie edytowano kategorię!");
+    onSuccess: async () => {
+      await notificationUtil.SendToastAndPushNotification(
+        "success",
+        "Pomyślnie edytowano kategorię!",
+        { duration: 5000 },
+      );
       queryClient.invalidateQueries({ queryKey: ["category", { id }] });
       queryClient.invalidateQueries({ queryKey: ["categories"] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
