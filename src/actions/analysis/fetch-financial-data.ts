@@ -24,63 +24,51 @@ export async function fetchFinancialData({
   endDate,
 }: FetchFinancialDataRequest): Promise<FetchFinancialDataResponse> {
   try {
+    // Helper for conditional sum with numeric type
+    const sumCase = (condition: string) =>
+      sql`COALESCE(SUM(CASE WHEN ${transactions.amount} ${sql.raw(condition)} THEN ${
+        transactions.amount
+      } ELSE 0 END), 0)::numeric(10,2)`;
+
     const [data] = await db
       .select({
-        income: sql`SUM(CASE WHEN
-            ${transactions.amount}
-            >=
-            0
-            THEN
-            ${transactions.amount}
-            ELSE
-            0
-            END
-            )`.mapWith(Number),
-        expense: sql`SUM(CASE WHEN
-            ${transactions.amount}
-            <
-            0
-            THEN
-            ${transactions.amount}
-            ELSE
-            0
-            END
-            )`.mapWith(Number),
-        balance: sql`SUM(
-            ${transactions.amount}
-            )`.mapWith(Number),
-        remaining: sql`SUM(CASE WHEN
-            ${transactions.amount}
-            >
-            0
-            THEN
-            ${transactions.amount}
-            ELSE
-            0
-            END
-            )`.mapWith(Number),
+        // Income: sum of positive transactions
+        income: sumCase(">= 0").mapWith(Number),
+        // Expense: absolute sum of negative transactions
+        expense: sql`ABS(${sumCase("< 0")})`.mapWith(Number),
+        // Balance: total sum
+        balance:
+          sql`COALESCE(SUM(${transactions.amount}), 0)::numeric(10,2)`.mapWith(
+            Number,
+          ),
+        // Remaining: income minus absolute expense
+        remaining: sql`${sumCase("> 0")} + ${sumCase("< 0")}`.mapWith(Number),
       })
       .from(transactions)
       .innerJoin(accounts, eq(transactions.accountId, accounts.id))
       .where(
         and(
-          accountId ? eq(transactions.accountId, accountId) : undefined,
-          eq(accounts.userId, userId),
-          gte(transactions.date, startDate),
-          lte(transactions.date, endDate),
+          ...[
+            accountId ? eq(transactions.accountId, accountId) : undefined,
+            eq(accounts.userId, userId),
+            gte(transactions.date, startDate),
+            lte(transactions.date, endDate),
+          ].filter(Boolean),
         ),
       );
 
-    console.log(data);
-
     return {
-      income: data.income || 0,
-      expense: data.expense || 0,
-      balance: data.balance || 0,
-      remaining: data.remaining || 0,
+      income: Number(data.income) || 0,
+      expense: Math.abs(Number(data.expense)) || 0,
+      balance: Number(data.balance) || 0,
+      remaining: Number(data.remaining) || 0,
     };
-  } catch (e) {
-    console.error("Failed to fetch financial data", e);
-    throw new Error("Failed to fetch financial data");
+  } catch (error) {
+    console.error("Failed to fetch financial data:", error);
+    throw new Error(
+      error instanceof Error
+        ? `Failed to fetch financial data: ${error.message}`
+        : "Failed to fetch financial data",
+    );
   }
 }
