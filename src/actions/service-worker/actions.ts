@@ -1,6 +1,7 @@
 "use server";
 
 import webpush from "web-push";
+import { PushSubscriptionWithKeys } from "@/providers/push-notifcations-provider";
 
 const vapidKeys = {
   publicKey: process.env.VAPID_PUBLIC_KEY!,
@@ -8,38 +9,24 @@ const vapidKeys = {
 };
 
 webpush.setVapidDetails(
-  "https://localhost:3000/",
+  process.env.NEXT_PUBLIC_APP_URL!,
   vapidKeys.publicKey,
   vapidKeys.privateKey,
 );
 
-let subscription: PushSubscription | null = null;
-
-export async function subscribeUser(sub: PushSubscription) {
-  subscription = sub;
-  // In a production environment, you would want to store the subscription in a database
-  // For example: await db.subscriptions.create({ data: sub })
-  return { success: true };
-}
-
-export async function unsubscribeUser() {
-  subscription = null;
-  // In a production environment, you would want to remove the subscription from the database
-  // For example: await db.subscriptions.delete({ where: { ... } })
-  return { success: true };
-}
-
-export async function sendNotification(message: string) {
+export async function sendNotification(
+  message: string,
+  subscription?: PushSubscriptionWithKeys,
+) {
   if (!subscription) {
     throw new Error("No subscription available");
   }
 
   try {
     await webpush.sendNotification(
-      // @ts-ignore
       subscription,
       JSON.stringify({
-        title: "Test Notification",
+        title: "Śledzenie budżetu - powiadomienie",
         body: message,
         icon: "/icon.png",
       }),

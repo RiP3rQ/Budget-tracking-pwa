@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useNewCategorySheet } from "@/states/categories/new-category-sheet-state";
 import { useDeleteCategories } from "@/hooks/categories/use-bulk-delete-categories";
 import { useGetCategories } from "@/hooks/categories/use-get-categories";
+import { useInitNotifications } from "@/lib/send-toast-and-push-notification";
 
 const CategoriesPage = () => {
   const newCategorySheet = useNewCategorySheet();
@@ -17,6 +18,11 @@ const CategoriesPage = () => {
   const categories = categoriesQuery.data ?? [];
 
   const isDisabled = deleteCategories.isPending || categoriesQuery.isLoading;
+
+  function NotificationInitializer() {
+    useInitNotifications();
+    return null;
+  }
 
   if (categoriesQuery.isLoading) {
     return (
@@ -68,6 +74,7 @@ const CategoriesPage = () => {
           />
         </CardContent>
       </Card>
+      <NotificationInitializer />
     </div>
   );
 };

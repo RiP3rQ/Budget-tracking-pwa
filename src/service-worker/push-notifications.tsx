@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { urlBase64ToUint8Array } from "@/service-worker/url-base-to-uint-array";
-import {
-  sendNotification,
-  subscribeUser,
-  unsubscribeUser,
-} from "@/actions/service-worker/actions";
+import { sendNotification } from "@/actions/service-worker/actions";
 
 export function PushNotificationManager() {
   const [isSupported, setIsSupported] = useState(false);
@@ -51,13 +47,11 @@ export function PushNotificationManager() {
       ),
     });
     setSubscription(sub);
-    await subscribeUser(sub);
   }
 
   async function unsubscribeFromPush() {
     await subscription?.unsubscribe();
     setSubscription(null);
-    await unsubscribeUser();
   }
 
   async function sendTestNotification() {
