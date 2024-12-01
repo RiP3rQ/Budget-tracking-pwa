@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { useCreateManyTransactions } from "@/hooks/transactions/use-bulk-create-transactions";
 import { ImportCard } from "@/app/(authorized)/transactions/_components/import-csv/import-card";
 import { UploadCSVButton } from "@/app/(authorized)/transactions/_components/import-csv/upload-csv-button";
+import { useInitNotifications } from "@/lib/send-toast-and-push-notification";
 
 enum VARIANTS {
   LIST = "LIST",
@@ -52,8 +53,15 @@ const TransactionsPage = () => {
   const transactionsQuery = useGetTransactions();
   const transactions = transactionsQuery.data ?? [];
 
+  console.log(transactions);
+
   const isDisabled =
     deleteTransactions.isPending || transactionsQuery.isLoading;
+
+  function NotificationInitializer() {
+    useInitNotifications();
+    return null;
+  }
 
   // import csv
   const onSubmitImport = async (
@@ -138,10 +146,11 @@ const TransactionsPage = () => {
         </CardHeader>
         <CardContent>
           <DataTable
-            // @ts-ignore
+            // @ts-expect-error - problem with accessor Fn type
             columns={columns}
             data={transactions}
-            filterKey={"kategorii"}
+            filterKey={"amount"}
+            filterKeyPlaceholder={"Szukaj po kwocie"}
             onDelete={(row) => {
               const ids = row.map((r) => r.original.id);
               deleteTransactions.mutate({ idsArray: ids });
@@ -150,6 +159,7 @@ const TransactionsPage = () => {
           />
         </CardContent>
       </Card>
+      <NotificationInitializer />
     </div>
   );
 };

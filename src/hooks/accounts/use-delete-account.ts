@@ -6,6 +6,7 @@ import {
   DeleteUserFunctionRequest,
   DeleteUserFunctionResponse,
 } from "@/actions/accounts/delete-account";
+import { notificationUtil } from "@/lib/send-toast-and-push-notification";
 
 export const useDeleteAccount = () => {
   const queryClient = useQueryClient();
@@ -17,8 +18,12 @@ export const useDeleteAccount = () => {
     mutationFn: async ({ id }) => {
       return await deleteAccountFunction({ id });
     },
-    onSuccess: () => {
-      toast.success("Pomyślnie usunięto konto!");
+    onSuccess: async () => {
+      await notificationUtil.SendToastAndPushNotification(
+        "success",
+        "Usunięto konto!",
+        { duration: 5000 },
+      );
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       // TODO: Invaliadte analysis and transactions

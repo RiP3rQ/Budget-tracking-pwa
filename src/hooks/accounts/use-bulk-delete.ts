@@ -5,6 +5,7 @@ import {
   BulkDeleteFunctionRequest,
   BulkDeleteFunctionResponse,
 } from "@/actions/accounts/bulk-delete";
+import { notificationUtil } from "@/lib/send-toast-and-push-notification";
 
 export const useDeleteAccounts = () => {
   const queryClient = useQueryClient();
@@ -16,8 +17,12 @@ export const useDeleteAccounts = () => {
     mutationFn: async ({ idsArray }) => {
       return await bulkDeleteFunction({ idsArray });
     },
-    onSuccess: () => {
-      toast.success("Usunięto konta!");
+    onSuccess: async () => {
+      await notificationUtil.SendToastAndPushNotification(
+        "success",
+        "Usunięto wiele kont!",
+        { duration: 5000 },
+      );
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
     },
     onError: (error) => {

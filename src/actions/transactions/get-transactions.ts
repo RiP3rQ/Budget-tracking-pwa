@@ -26,7 +26,7 @@ export type GetTransactionsFunctionResponse = {
     userId: string;
     createdAt: Date;
     updatedAt: Date;
-  };
+  } | null;
   date: Date;
   payee: string;
   userId: string;

@@ -6,6 +6,7 @@ import {
   EditUserFunctionRequest,
   EditUserFunctionResponse,
 } from "@/actions/accounts/edit-account";
+import { notificationUtil } from "@/lib/send-toast-and-push-notification";
 
 export const useEditAccount = (id?: number) => {
   const queryClient = useQueryClient();
@@ -17,8 +18,12 @@ export const useEditAccount = (id?: number) => {
     mutationFn: async ({ id, name }) => {
       return await editAccountFunction({ id, name });
     },
-    onSuccess: () => {
-      toast.success("Pomyślnie edytowano konto!");
+    onSuccess: async () => {
+      await notificationUtil.SendToastAndPushNotification(
+        "success",
+        "Pomyślnie edytowano konto!",
+        { duration: 5000 },
+      );
       queryClient.invalidateQueries({ queryKey: ["account", { id }] });
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });

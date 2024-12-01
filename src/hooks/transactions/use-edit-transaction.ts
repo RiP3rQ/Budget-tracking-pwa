@@ -5,6 +5,7 @@ import {
   EditTransactionFunctionRequest,
   EditTransactionFunctionResponse,
 } from "@/actions/transactions/edit-transaction";
+import { notificationUtil } from "@/lib/send-toast-and-push-notification";
 
 export const useEditTransaction = (id?: number) => {
   const queryClient = useQueryClient();
@@ -16,8 +17,12 @@ export const useEditTransaction = (id?: number) => {
     mutationFn: async (values) => {
       return await editTransactionFunction(values);
     },
-    onSuccess: () => {
-      toast.success("Pomyślnie edytowano transakcję!");
+    onSuccess: async () => {
+      await notificationUtil.SendToastAndPushNotification(
+        "success",
+        "Pomyślnie edytowano transakcję!",
+        { duration: 5000 },
+      );
       queryClient.invalidateQueries({ queryKey: ["transaction", { id }] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["summary"] });

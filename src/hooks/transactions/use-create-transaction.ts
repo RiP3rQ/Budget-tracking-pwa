@@ -6,6 +6,7 @@ import {
   CreateTransactionsFunctionRequest,
   CreateTransactionsFunctionResponse,
 } from "@/actions/transactions/create-transaction";
+import { notificationUtil } from "@/lib/send-toast-and-push-notification";
 
 export const useCreateTransaction = () => {
   const queryClient = useQueryClient();
@@ -17,8 +18,12 @@ export const useCreateTransaction = () => {
     mutationFn: async (values) => {
       return await createTransactionsFunction(values);
     },
-    onSuccess: () => {
-      toast.success("Dodano nową transakcję!");
+    onSuccess: async () => {
+      await notificationUtil.SendToastAndPushNotification(
+        "success",
+        "Dodano nową transakcję!",
+        { duration: 5000 },
+      );
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["summary"] });
     },

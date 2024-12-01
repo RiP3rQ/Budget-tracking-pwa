@@ -5,6 +5,7 @@ import {
   CreateUserFunctionRequest,
   CreateUserFunctionResponse,
 } from "@/actions/accounts/create-account";
+import { notificationUtil } from "@/lib/send-toast-and-push-notification";
 
 export const useCreateAccount = () => {
   const queryClient = useQueryClient();
@@ -16,8 +17,12 @@ export const useCreateAccount = () => {
     mutationFn: async ({ name }) => {
       return await createUserFunction({ name });
     },
-    onSuccess: () => {
-      toast.success("Dodano nowe konto!");
+    onSuccess: async () => {
+      await notificationUtil.SendToastAndPushNotification(
+        "success",
+        "Dodano nowe konto!",
+        { duration: 5000 },
+      );
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
     },
     onError: (error) => {

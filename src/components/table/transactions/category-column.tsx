@@ -6,7 +6,7 @@ import { SelectCategory } from "@/db/schema";
 
 type Props = {
   id: number;
-  category: SelectCategory;
+  category: SelectCategory | null;
 };
 
 export const CategoryColumn = ({ id, category }: Readonly<Props>) => {
@@ -14,7 +14,7 @@ export const CategoryColumn = ({ id, category }: Readonly<Props>) => {
   const { onOpen: onOpenTransactionEdit } = useEditTransactionSheet();
 
   const onClick = () => {
-    if (!category.id) {
+    if (!category?.id) {
       onOpenTransactionEdit(id);
       return;
     }
@@ -30,7 +30,7 @@ export const CategoryColumn = ({ id, category }: Readonly<Props>) => {
       )}
     >
       {!category && <TriangleAlert className={"mr-2 size-4 shrink-0"} />}
-      {category.name || "Brak kategorii"}
+      {category?.name || "Brak kategorii"}
     </div>
   );
 };

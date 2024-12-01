@@ -16,7 +16,7 @@ import { CustomSelector } from "@/components/custom-selector";
 import { CustomDatePicker } from "@/components/custom-datepicker";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { CustomCurrencyInput } from "@/components/currency-input";
+import { CurrencyValueInput } from "@/components/currency-input";
 import { formatDateForDb } from "@/lib/dates";
 import { useAuth } from "@clerk/nextjs";
 
@@ -41,8 +41,8 @@ const formSchema = z.object({
 
   payee: z
     .string({
-      required_error: "Odbiorca/nadawca jest wymagany",
-      invalid_type_error: "Nieprawidłowy format odbiorcy/nadawcy",
+      required_error: "Odbiorca jest wymagany",
+      invalid_type_error: "Nieprawidłowy format odbiorcy",
     })
     .min(1, "Odbiorca/nadawca jest wymagany")
     .max(100, "Nazwa odbiorcy/nadawcy nie może przekraczać 100 znaków"),
@@ -90,7 +90,7 @@ export const TransactionForm = ({
   id,
   defaultValues = {
     date: new Date(),
-    amount: "0",
+    amount: "0.00",
     payee: "",
     note: null,
     categoryId: null,
@@ -140,7 +140,10 @@ export const TransactionForm = ({
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Data</FormLabel>
+              <FormLabel>
+                Data
+                <RequiredSymbol />
+              </FormLabel>
               <br />
               <FormControl>
                 <CustomDatePicker
@@ -158,7 +161,10 @@ export const TransactionForm = ({
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Konto</FormLabel>
+              <FormLabel>
+                Konto
+                <RequiredSymbol />
+              </FormLabel>
               <FormControl>
                 <CustomSelector
                   placeholder={"Wybierz konto"}
@@ -198,9 +204,12 @@ export const TransactionForm = ({
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Kwota</FormLabel>
+              <FormLabel>
+                Kwota
+                <RequiredSymbol />
+              </FormLabel>
               <FormControl>
-                <CustomCurrencyInput
+                <CurrencyValueInput
                   value={field.value}
                   onChange={field.onChange}
                   disabled={disabled}
@@ -216,7 +225,10 @@ export const TransactionForm = ({
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Odbiorca</FormLabel>
+              <FormLabel>
+                Odbiorca
+                <RequiredSymbol />
+              </FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -272,3 +284,7 @@ export const TransactionForm = ({
     </Form>
   );
 };
+
+function RequiredSymbol() {
+  return <span className={"text-rose-500"}>*</span>;
+}

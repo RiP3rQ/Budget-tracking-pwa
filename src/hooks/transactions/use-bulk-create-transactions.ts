@@ -5,6 +5,7 @@ import {
   BulkCreateTransactionsFunctionRequest,
   BulkCreateTransactionsFunctionResponse,
 } from "@/actions/transactions/bulk-create-transactions";
+import { notificationUtil } from "@/lib/send-toast-and-push-notification";
 
 export const useCreateManyTransactions = () => {
   const queryClient = useQueryClient();
@@ -16,8 +17,12 @@ export const useCreateManyTransactions = () => {
     mutationFn: async (values) => {
       return await bulkCreateTransactionsFunction(values);
     },
-    onSuccess: () => {
-      toast.success("Utworzono wiele transakcji!");
+    onSuccess: async () => {
+      await notificationUtil.SendToastAndPushNotification(
+        "success",
+        "Utworzono wiele transakcji!",
+        { duration: 5000 },
+      );
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["summary"] });
     },

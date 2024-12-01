@@ -6,7 +6,9 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { Info, MinusCircle, PlusCircle } from "lucide-react";
-import CurrencyInput from "react-currency-input-field";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 
 type Props = {
   value: string;
@@ -15,20 +17,28 @@ type Props = {
   disabled?: boolean;
 };
 
-export const CustomCurrencyInput = ({
+export const CurrencyValueInput = ({
   value,
   onChange,
   placeholder,
   disabled = false,
 }: Props) => {
-  const parsedValue = parseFloat(value);
+  const [inputValue, setInputValue] = useState(value);
+  const parsedValue = parseFloat(inputValue);
   const isIncome = parsedValue > 0;
   const isExpense = parsedValue < 0;
 
   const onReverseValue = () => {
-    if (!value) return;
-    const newValue = parseFloat(value) * -1;
+    if (!inputValue) return;
+    const newValue = parseFloat(inputValue) * -1;
+    setInputValue(newValue.toString());
     onChange(newValue.toString());
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setInputValue(newValue);
+    onChange(newValue);
   };
 
   return (
@@ -55,23 +65,27 @@ export const CustomCurrencyInput = ({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      {/* CREATE OWN CURRENCY PICKER*/}
-      <CurrencyInput
-        suffix={"zł"}
+      <Input
         className={
-          "pl-10 flex h-10 w-full rounded-md border border-input bg-background px-3" +
+          "pl-11 flex h-10 w-full rounded-md border border-input bg-background px-3" +
           "py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm " +
           "file:font-medium placeholder:text-muted-foreground focus-visible:outline-none" +
           "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 " +
           "disabled:cursor-not-allowed disabled:opacity-50"
         }
         placeholder={placeholder}
-        value={value}
-        decimalsLimit={2}
-        decimalScale={2}
-        onValueChange={(value) => onChange(value)}
+        value={inputValue}
+        onChange={handleInputChange}
         disabled={disabled}
       />
+      <Badge
+        className={cn(
+          "absolute top-1.5 right-1.5 bg-green-500 text-white px-2 py-1 rounded-md",
+          isExpense && "bg-rose-500",
+        )}
+      >
+        PLN
+      </Badge>
       <p className={"text-xs text-muted-foreground"}>
         {isIncome ? "To będzie przychód" : isExpense ? "To będzie wydatek" : ""}
       </p>

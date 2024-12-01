@@ -9,6 +9,7 @@ import { columns } from "@/components/table/accounts/columns";
 import { useGetAccounts } from "@/hooks/accounts/use-get-accounts";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDeleteAccounts } from "@/hooks/accounts/use-bulk-delete";
+import { useInitNotifications } from "@/lib/send-toast-and-push-notification";
 
 const AccountsPage = () => {
   const newAccountSheet = useNewAccountSheet();
@@ -17,6 +18,11 @@ const AccountsPage = () => {
   const accounts = accountsQuery.data ?? [];
 
   const isDisabled = deleteAccounts.isPending || accountsQuery.isLoading;
+
+  function NotificationInitializer() {
+    useInitNotifications();
+    return null;
+  }
 
   if (accountsQuery.isLoading) {
     return (
@@ -39,8 +45,6 @@ const AccountsPage = () => {
     );
   }
 
-  console.log(accounts);
-
   return (
     <div className={"max-w-screen-2xl mx-auto w-full pb-10"}>
       <Card className={"border-none drop-shadow-sm"}>
@@ -61,7 +65,8 @@ const AccountsPage = () => {
           <DataTable
             columns={columns}
             data={accounts}
-            filterKey={"nazwie"}
+            filterKey={"name"}
+            filterKeyPlaceholder={"Szukaj konta po nazwie"}
             onDelete={(row) => {
               const ids = row.map((r) => r.original.id);
               deleteAccounts.mutate({ idsArray: ids });
@@ -70,6 +75,7 @@ const AccountsPage = () => {
           />
         </CardContent>
       </Card>
+      <NotificationInitializer />
     </div>
   );
 };

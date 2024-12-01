@@ -6,6 +6,7 @@ import {
   DeleteTransactionFunctionRequest,
   DeleteTransactionFunctionResponse,
 } from "@/actions/transactions/delete-transaction";
+import { notificationUtil } from "@/lib/send-toast-and-push-notification";
 
 export const useDeleteTransaction = (id?: number) => {
   const queryClient = useQueryClient();
@@ -17,8 +18,12 @@ export const useDeleteTransaction = (id?: number) => {
     mutationFn: async (values) => {
       return await deleteTransactionFunction(values);
     },
-    onSuccess: () => {
-      toast.success("Pomyślnie usunięto transakcję!");
+    onSuccess: async () => {
+      await notificationUtil.SendToastAndPushNotification(
+        "success",
+        "Usunięto transakcję!",
+        { duration: 5000 },
+      );
       queryClient.invalidateQueries({
         queryKey: [
           "transaction",

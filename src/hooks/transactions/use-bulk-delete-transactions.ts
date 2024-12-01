@@ -5,6 +5,7 @@ import {
   BulkDeleteTransactionsFunctionRequest,
   BulkDeleteTransactionsFunctionResponse,
 } from "@/actions/transactions/bulk-delete-transactions";
+import { notificationUtil } from "@/lib/send-toast-and-push-notification";
 
 export const useDeleteTransactions = () => {
   const queryClient = useQueryClient();
@@ -16,8 +17,12 @@ export const useDeleteTransactions = () => {
     mutationFn: async (values) => {
       return await bulkDeleteCategoriesFunction(values);
     },
-    onSuccess: () => {
-      toast.success("Usunięto transakcję!");
+    onSuccess: async () => {
+      await notificationUtil.SendToastAndPushNotification(
+        "success",
+        "Usunięto wiele transakcji!",
+        { duration: 5000 },
+      );
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["summary"] });
     },
