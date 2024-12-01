@@ -124,6 +124,15 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
       : undefined,
   );
 
+  useEffect(() => {
+    if (initialDateFrom && initialDateTo) {
+      setRange({
+        from: getDateAdjustedForTimezone(initialDateFrom),
+        to: getDateAdjustedForTimezone(initialDateTo),
+      });
+    }
+  }, [initialDateFrom, initialDateTo]);
+
   // Refs to store the values of range and rangeCompare when the date picker is opened
   const openedRangeRef = useRef<DateRange | undefined>();
   const openedRangeCompareRef = useRef<DateRange | undefined>();
