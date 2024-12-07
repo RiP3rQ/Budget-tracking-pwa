@@ -53,23 +53,25 @@ Install and run "Budget-tracking-pwa" with pnpm:
 
 #### Service-worker
 `NEXT_PUBLIC_VAPID_PUBLIC_KEY`=
+
 `VAPID_PUBLIC_KEY`=
+
 `VAPID_PRIVATE_KEY`=
 
 
 
 ## Screenshots
 
-![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/1.png?token=GHSAT0AAAAAACX5KLDEJ3NFC7ZSPJABFYWEZ2M4QCA)
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/1.png)
 
-![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/2.png?token=GHSAT0AAAAAACX5KLDFQQBRLHE25D4JC6RQZ2M4Q4Q)
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/2.png)
 
-![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/3.png?token=GHSAT0AAAAAACX5KLDFIWZNFDDSCUJUY6OEZ2M4Q5Q)
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/3.png)
 
-![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/4.png?token=GHSAT0AAAAAACX5KLDERT6NAMSVMGLUZA4UZ2M4Q6Q)
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/4.png)
 
-![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/5.png?token=GHSAT0AAAAAACX5KLDF2RSEX4IQGXLJYCPKZ2M4Q7Q)
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/5.png)
 
-![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/6.png?token=GHSAT0AAAAAACX5KLDF367AO5CF3IX2VQIQZ2M4RBA)
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/6.png)
 
-![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/7.png?token=GHSAT0AAAAAACX5KLDF7OLIP3A2YPJ7MSO4Z2M4RCA)
+![App Screenshot](https://raw.githubusercontent.com/RiP3rQ/Budget-tracking-pwa/refs/heads/main/public/screenshots/7.png)
